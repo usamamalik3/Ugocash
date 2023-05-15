@@ -22,31 +22,72 @@ class AccountScreen extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              ListTile(
-                leading:
-                    SizedBox(width: 65, height: 65, child: getImageHeader()),
-                title: Text(
-                 "Malik",
-                
+              Card(
+                   shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)
                 ),
-                subtitle: Text(
-                   "Usama malik ahmed",
-                  
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading:
+                          SizedBox(width: 65, height: 65, child: getImageHeader()),
+                      title: Text(
+                       "Malik",
+                      
+                      ),
+                      subtitle: Text(
+                         "Usama malik ahmed",style: Theme.of(context).textTheme.labelMedium,
+                        
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Column(
-                children: getChildrenWithSeperator(
-                  widgets: accountItems.map((e) {
-                    return getAccountItemWidget(e, context);
-                  }).toList(),
-                  seperator: Divider(
-                    thickness: 1,
-                  ),
+              SizedBox(    height: 20,
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("General", style: Theme.of(context).textTheme.labelLarge,),
+                    ),
+                    Column(
+                      children: getChildrenWithSeperator(
+                        widgets: accountItems.map((e) {
+                          return getAccountItemWidget(e, context);
+                        }).toList(),
+                        seperator: Divider(
+                          thickness: 1,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
               SizedBox(
                 height: 20,
               ),
+               Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)
+                ),
+                 child: Column(
+                        children: getChildrenWithSeperator(
+                          widgets: accountItems2.map((e) {
+                            return getAccountItemWidget(e, context);
+                          }).toList(),
+                          seperator: Divider(
+                            thickness: 1,
+                          ),
+                        ),
+                      ),
+               ),
               logoutButton( context),
               SizedBox(
                 height: 20,
@@ -71,8 +112,9 @@ class AccountScreen extends StatelessWidget {
           minimumSize: const Size.fromHeight(50),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            Icon(Icons.logout_outlined, color: Colors.black,),
             // SizedBox(
             //   width: 20,
             //   height: 20,
@@ -86,7 +128,7 @@ class AccountScreen extends StatelessWidget {
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textColor2),
+                  color: AppColors.textColor),
             ),
             Container()
           ],
@@ -115,9 +157,8 @@ class AccountScreen extends StatelessWidget {
       child: Row(
         children: [
         
-          SizedBox(
-            width: 20,
-          ),
+          accountItem.icon,
+          SizedBox(width: 10,),
           Text(
             accountItem.label,
             style: Theme.of(context).textTheme.labelLarge,

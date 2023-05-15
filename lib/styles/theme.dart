@@ -56,8 +56,9 @@ ThemeData themeData = ThemeData(
       fontSize: 12,
     ),
   ),
+  
   floatingActionButtonTheme:const  FloatingActionButtonThemeData(),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+  bottomNavigationBarTheme:  BottomNavigationBarThemeData(
       backgroundColor: AppColors.secondaryColor,
       unselectedItemColor: AppColors.backgroundColor,
       selectedItemColor: AppColors.textColor2),

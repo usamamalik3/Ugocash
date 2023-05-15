@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
   List<Widget> screens =  [
    const Dashboard(),
+  const RecipientScreen(),
    const RecipientScreen(),
     AccountScreen(),
     
@@ -64,11 +65,15 @@ class _HomeScreenState extends State<HomeScreen> {
             showUnselectedLabels: true,
             items: const  <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-               
+               backgroundColor: AppColors.secondaryColor,
                 icon: Icon(Icons.dashboard),
                 label: 'Dashborad',
               ),
-            
+             BottomNavigationBarItem(
+                icon: Icon(Icons.credit_card),
+                label: 'Card',
+              ),
+             
               BottomNavigationBarItem(
                 icon: Icon(Icons.receipt_outlined),
                 label: 'Recipient',
@@ -77,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(Icons.account_box),
                 label: 'Profile',
               ),
+          
           
             ],
           ),

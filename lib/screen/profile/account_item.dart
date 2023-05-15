@@ -1,27 +1,40 @@
 import 'package:flutter/material.dart';
 
 class AccountItem {
-  final String label;
-  
-  final Function(BuildContext context)  onPressed;
+   String label;
+   Icon icon;
+   Function(BuildContext context)  onPressed;
 
-  AccountItem(this.label,  this.onPressed);
+  AccountItem(this.label,  this.onPressed, this.icon);
 }
 
 List<AccountItem> accountItems = [
-  AccountItem("Sending To" ,  (context) {
+  AccountItem("Address" ,  (context) {
     
-  }),
-  AccountItem("My Details", (context) {
+  }, Icon(Icons.home),),
+  AccountItem("Transaction history", (context) {
     
-  }),
+  }, Icon(Icons.receipt),),
   AccountItem(
-      "Increase Limits", (context) {
+      "Contract", (context) {
     
-  }),
-  AccountItem("Payment Methods", (context) {
-    
-  }),
+  }, Icon(Icons.group),),
+ 
+  
   
  
 ];
+
+List<AccountItem> accountItems2 = [
+  AccountItem("Address" ,  (context) {
+    
+  },Icon(Icons.settings),),
+  AccountItem("Transaction history", (context) {
+    
+  }, Icon(Icons.help_center),),
+ 
+  
+  
+ 
+];
+
