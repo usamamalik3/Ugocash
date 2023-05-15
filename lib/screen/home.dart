@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:ugocash/screen/dashboard.dart';
-import 'package:ugocash/screen/phone_screen.dart';
+
 import 'package:ugocash/screen/profile/account_screen.dart';
 import 'package:ugocash/screen/recipient/recipient_screen.dart';
 import 'package:ugocash/styles/colors.dart';

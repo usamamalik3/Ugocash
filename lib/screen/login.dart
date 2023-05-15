@@ -3,24 +3,19 @@ import 'package:ugocash/screen/country_choose.dart';
 import 'package:ugocash/screen/home.dart';
 import 'package:ugocash/styles/colors.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phonenoController = TextEditingController();
+  TextEditingController namecontroller = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController cnfrmpasswordController = TextEditingController();
+ bool _isObscure1= true;
   
- 
- bool
-  _isObscure1= true;
-  bool _isObscure2= true;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -44,14 +39,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      "Getting started",
+                      "Let's Sign You In",
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
-                      "Create an account to continue! ",
+                      "Welcome back, you've been missed! ",
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
@@ -60,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 20,
                   ),
                   TextFormField(
-                    controller: emailController,
+                    controller: namecontroller,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       hintText: "abc@gmail.com",
@@ -70,23 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    
-                    controller: phonenoController,
-                    keyboardType: TextInputType.name,
-                    decoration:  InputDecoration(
-                      // prefixIcon: Icon(Icons.phone_android,),
-                      // prefixIconColor: AppColors.textColor2,
-                      hintText: "+911567899342",
-                      label: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Phone no",style: Theme.of(context).textTheme.labelMedium,),
-                      ),
-                    ),
-                  ),
+              
                   const SizedBox(
                     height: 20,
                   ),
@@ -95,8 +74,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     keyboardType: TextInputType.name,
                     obscureText: _isObscure1,
                     decoration:  InputDecoration(
-                      
-                       suffixIcon: InkWell(
+
+                         suffixIcon: InkWell(
                           child: Icon(_isObscure1
                               ? Icons.visibility
                               : Icons.visibility_off),
@@ -105,33 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               _isObscure1 = !_isObscure1;
                             });
                           }),
-                     
-                      hintText: "*******",
-                      label: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Password",style: Theme.of(context).textTheme.labelMedium,),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: cnfrmpasswordController,
-                    keyboardType: TextInputType.name,
-                    obscureText: _isObscure2,
-                    decoration:  InputDecoration(
-
-                         suffixIcon: InkWell(
-                          child: Icon(_isObscure2
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                          onTap: () {
-                            setState(() {
-                              _isObscure2 = !_isObscure2;
-                            });
-                          }),
-                      hintText: "*******",
+                      hintText: "********",
                       label: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text("Confirm Password",style: Theme.of(context).textTheme.labelMedium,),
@@ -149,12 +102,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           // _loginWithPhoneNumber(phonecontroller.text);
 
-                          Navigator.pushReplacementNamed(context, "/login");
+                          Navigator.pushReplacementNamed(context, "/home");
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(14.0),
                           child: Text(
-                            'Sign up',
+                            'Sign in',
                             style: TextStyle(
                                 fontSize: 16, color: AppColors.textColor),
                           ),

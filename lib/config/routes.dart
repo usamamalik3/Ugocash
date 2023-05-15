@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:ugocash/screen/country_choose.dart';
+import 'package:ugocash/onboaring_screen/onboarding_screen.dart';
+
 import 'package:ugocash/screen/home.dart';
-import 'package:ugocash/screen/otp.dart';
-import 'package:ugocash/screen/phone_screen.dart';
+import 'package:ugocash/screen/login.dart';
+
+
 import 'package:ugocash/screen/recipient/add_recipient.dart';
+import 'package:ugocash/screen/register.dart';
 
 
 
 class Routes {
 
 
-static const String choosecountry = '/choosecountry';
-  static const String phonescreen = '/phonescreen';
-  static const String otpscreen = '/otpscreen';
+static const String onboarding = '/onboarding';
+  static const String register = '/register';
+  static const String login = '/login';
   static const String home = '/home';
   static const String addrecipient ='/addrecipient';
   Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-       case choosecountry:
-       return MaterialPageRoute<CountryChoose>(
-            builder: (context) => const CountryChoose());
-      case phonescreen:
-       return MaterialPageRoute<PhoneScreen>(
-            builder: (context) => const PhoneScreen());
-       case otpscreen:
-       return MaterialPageRoute<OtpScreeen>(
-            builder: (context) => const OtpScreeen());
+       case onboarding:
+       return MaterialPageRoute<OnBoarding>(
+            builder: (context) => const OnBoarding());
+    
+       case register:
+       return MaterialPageRoute<RegisterScreen>(
+            builder: (context) => const RegisterScreen());
+            case login:
+       return MaterialPageRoute<LoginScreen>(
+            builder: (context) => const LoginScreen());
              case home:
        return MaterialPageRoute<HomeScreen>(
             builder: (context) => const HomeScreen());
@@ -33,8 +37,8 @@ static const String choosecountry = '/choosecountry';
            return MaterialPageRoute<AddRecipient>(builder: (context) => AddRecipient());
 
       default:
-        return MaterialPageRoute<PhoneScreen>(
-            builder: (context) => const PhoneScreen());
+        return MaterialPageRoute<RegisterScreen>(
+            builder: (context) => const RegisterScreen());
     }
   }
 }

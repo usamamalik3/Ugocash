@@ -14,7 +14,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Exchange Rate:",)),
+        title: Center(child: Text("Dashboard",)),
         
       ),
       body: SingleChildScrollView(
@@ -24,19 +24,7 @@ class _DashboardState extends State<Dashboard> {
               
               
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      
-                      
-                      Image.asset("assets/images/exchange.png", width: 250,),
-                      Text("Best rate, Low fees, Special Offers", style: Theme.of(context).textTheme.titleMedium,)
-                    ],
-                  ),
-                  
-                ),
+               Text("\$10,6500"),
                  Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -44,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       
                       
-                      Image.asset("assets/images/exchange.png", width: 250,),
+                      Image.asset("assets/images/exchange2.png", width: 250,),
                       Text("Best rate, Low fees, Special Offers", style: Theme.of(context).textTheme.titleMedium,)
                     ],
                   ),

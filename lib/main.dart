@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ugocash/screen/register.dart';
 
 import 'package:ugocash/screen/splash_screen.dart';
 
 import 'package:ugocash/styles/theme.dart';
 
 import 'config/routes.dart';
+import 'onboaring_screen/onboarding_screen.dart';
 
 void main() async {
   //  WidgetsFlutterBinding.ensureInitialized();

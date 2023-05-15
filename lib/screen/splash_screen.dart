@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void onTimerFinished() {
-    Navigator.of(context).pushReplacementNamed(Routes.choosecountry);
+    Navigator.of(context).pushReplacementNamed(Routes.onboarding);
   }
 
   @override
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         SizedBox(height: 30,),
               Column(
                 children: [
-                  Text('Payment Solutions\n Pay & Get Paid', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall,),
+                  Text('Payment Solutions\n Pay & Get Paid', textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineMedium,),
                 SizedBox(height: 30,),
                 SizedBox(
                 width: width* .65,
