@@ -4,6 +4,7 @@ import 'package:ugocash/styles/colors.dart';
 String gilroyFontFamily = "Gilroy";
 
 ThemeData themeData = ThemeData(
+  
   cardColor: AppColors.secondaryColor,
   bottomSheetTheme: BottomSheetThemeData(backgroundColor: AppColors.backgroundColor),
   iconTheme: IconThemeData(color: AppColors.textColor2),
@@ -15,6 +16,7 @@ ThemeData themeData = ThemeData(
   )),
   textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(backgroundColor: AppColors.secondaryColor)),
+    
   textTheme: const TextTheme(
     headlineLarge: TextStyle(
       color: AppColors.textColor2,

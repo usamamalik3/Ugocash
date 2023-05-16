@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ugocash/config/routes.dart';
 import 'package:ugocash/screen/country_choose.dart';
 import 'package:ugocash/screen/home.dart';
 import 'package:ugocash/styles/colors.dart';
@@ -149,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           // _loginWithPhoneNumber(phonecontroller.text);
 
-                          Navigator.pushReplacementNamed(context, "/login");
+                          Navigator.pushReplacementNamed(context, Routes.secondregister);
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(14.0),

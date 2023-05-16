@@ -18,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height= MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -130,54 +130,60 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child:  Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: Container(
-                    
-                    width: width * 1,
-                    height: height*0.28,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      itemCount: 8,
-                      itemBuilder: (ctx, i) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                           
-                            children: [
-                              Container( decoration: BoxDecoration(
-                                color: Color.fromARGB(_random.nextInt(256), _random.nextInt(256),
-                  _random.nextInt(256), _random.nextInt(256)),
-                                borderRadius: BorderRadius.all(Radius.circular(10)),),
-                                child: Icon(Icons.receipt_outlined),
-                                width: 50,
-                                height: 58,
-                              ),
-                              SizedBox(height: 5,),
-                              Text(
-                                'Title',
-                                style:Theme.of(context).textTheme.labelMedium
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:4,
-                        childAspectRatio: 1.5,
-                        crossAxisSpacing: 2,
-                        mainAxisSpacing: 2,
-                        mainAxisExtent: 100,
-                      ),
-                    ),
-                  ),
-                ),
-                               ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Card(
+                //     shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(10)),
+                //     child: Container(
+                //       width: width * 1,
+                //       height: height * 0.28,
+                //       child: GridView.builder(
+                //         shrinkWrap: true,
+                //         padding: const EdgeInsets.symmetric(
+                //             horizontal: 8, vertical: 4),
+                //         itemCount: 8,
+                //         itemBuilder: (ctx, i) {
+                //           return Padding(
+                //             padding: const EdgeInsets.all(8.0),
+                //             child: Column(
+                //               children: [
+                //                 Container(
+                //                   decoration: BoxDecoration(
+                //                     color: Color.fromARGB(
+                //                         _random.nextInt(256),
+                //                         _random.nextInt(256),
+                //                         _random.nextInt(256),
+                //                         _random.nextInt(256)),
+                //                     borderRadius:
+                //                         BorderRadius.all(Radius.circular(10)),
+                //                   ),
+                //                   child: Icon(Icons.receipt_outlined),
+                //                   width: 50,
+                //                   height: 58,
+                //                 ),
+                //                 SizedBox(
+                //                   height: 5,
+                //                 ),
+                //                 Text('Title',
+                //                     style: Theme.of(context)
+                //                         .textTheme
+                //                         .labelMedium),
+                //               ],
+                //             ),
+                //           );
+                //         },
+                //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //           crossAxisCount: 4,
+                //           childAspectRatio: 1.5,
+                //           crossAxisSpacing: 2,
+                //           mainAxisSpacing: 2,
+                //           mainAxisExtent: 100,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -209,53 +215,60 @@ class _DashboardState extends State<Dashboard> {
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
+
   showAlertDialog(BuildContext context) {
+    // set up the buttons
 
-  // set up the buttons
- 
-  Widget continueButton = TextButton(
-    child: Text("click & Continue", style: Theme.of(context).textTheme.labelMedium,),
-    onPressed:  () {
-      Navigator.pushNamed(context, Routes.recipient);
-    },
-  );
-  Widget card = Card(
-    child: Container(width:25, height: 25,),
-);
-Widget textfield = TextFormField(
-  decoration: InputDecoration( 
+    Widget continueButton = TextButton(
+      child: Text(
+        "click & Continue",
+        style: Theme.of(context).textTheme.labelMedium,
+      ),
+      onPressed: () {
+        Navigator.pushNamed(context, Routes.recipient);
+      },
+    );
+    Widget card = Card(
+      child: Container(
+        width: 25,
+        height: 25,
+      ),
+    );
+    Widget textfield = TextFormField(
+      decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(
-                                    width: 1.0, color: AppColors.textColor2)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide: const BorderSide(
-                                    width: 1.0, color: AppColors.textColor2)),),
+            borderRadius: BorderRadius.circular(16),
+            borderSide:
+                const BorderSide(width: 1.0, color: AppColors.textColor2)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide:
+                const BorderSide(width: 1.0, color: AppColors.textColor2)),
+      ),
+    );
 
-);
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      backgroundColor: AppColors.secondaryColor,
+      actionsAlignment: MainAxisAlignment.center,
+      icon: Icon(
+        Icons.credit_card,
+        size: 40,
+      ),
+      title: Text("Transfer Money"),
+      content: Text("USD"),
+      actions: [
+        textfield,
+        continueButton,
+      ],
+    );
 
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    backgroundColor: AppColors.secondaryColor,
-    actionsAlignment: MainAxisAlignment.center,
-    
-    icon: Icon(Icons.credit_card, size: 40,),
-    title: Text("Transfer Money"),
-    content: Text("USD"),
-    actions: [
-
-   textfield,
-      continueButton,
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

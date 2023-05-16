@@ -209,7 +209,7 @@ class _RecipientScreenState extends State<RecipientScreen> {
                                 onPressed: () {
                                   // _loginWithPhoneNumber(phonecontroller.text);
 
-                                  //  Navigator.pushReplacementNamed(context, "/home");
+                                   Navigator.pushReplacementNamed(context, Routes.confrmtranscation);
                                 },
                                 child: const Padding(
                                   padding: EdgeInsets.all(14.0),

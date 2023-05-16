@@ -36,14 +36,14 @@ class _OnBoardingState extends State<OnBoarding> {
             },
             children: const [
               BuildPage(
-                urlImage: 'assets/images/exchange.png',
+                urlImage: 'assets/images/dollar.png' ,
                 title: 'Leading Payment \nApplication ',
                 subtitle: 'More than 100 million users with 1,000 Thousand partners and ervices in the World',
               ),
               BuildPage(
-                urlImage: 'assets/images/secure.png',
+                urlImage: 'assets/images/banking.png',
                 title: 'Prestige and Absolute \n Security',
-                subtitle: 'Licensed by all banks in the world & secure with multi-tier PCI-DSS international standard',
+                subtitle: 'Select your bank\n Link your Account \n Transfer Money\n Add Money to your Wallet',
               ),
               BuildPage(
                 urlImage: 'assets/images/exchange3.png',
