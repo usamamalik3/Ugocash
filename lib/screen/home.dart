@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:ugocash/screen/card/link_card.dart';
 import 'package:ugocash/screen/dashboard.dart';
 
 import 'package:ugocash/screen/profile/account_screen.dart';
@@ -18,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
   List<Widget> screens =  [
    const Dashboard(),
-  const RecipientScreen(),
+  const LinkCard(),
    const RecipientScreen(),
     AccountScreen(),
     

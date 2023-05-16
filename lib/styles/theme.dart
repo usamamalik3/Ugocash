@@ -57,11 +57,13 @@ ThemeData themeData = ThemeData(
     ),
   ),
   
+  checkboxTheme: const CheckboxThemeData( side: BorderSide(color: AppColors.textColor2, )),
   floatingActionButtonTheme:const  FloatingActionButtonThemeData(),
-  bottomNavigationBarTheme:  BottomNavigationBarThemeData(
+  bottomNavigationBarTheme:  const BottomNavigationBarThemeData(
       backgroundColor: AppColors.secondaryColor,
       unselectedItemColor: AppColors.backgroundColor,
       selectedItemColor: AppColors.textColor2),
+      
   inputDecorationTheme: InputDecorationTheme(
     suffixIconColor: AppColors.textColor2,
     labelStyle: const TextStyle(

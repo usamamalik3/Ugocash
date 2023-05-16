@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:ugocash/config/routes.dart';
 
 import '../styles/colors.dart';
 
@@ -89,19 +90,24 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
                       ),
-                      Card(
-                        child: Container(
-                          width: 85,
-                          height: 60,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.card_membership_outlined),
-                              Text(
-                                "Transfer",
-                                style: Theme.of(context).textTheme.labelSmall,
-                              )
-                            ],
+                      GestureDetector(
+                        onTap: () {
+                          showAlertDialog(context);
+                        },
+                        child: Card(
+                          child: Container(
+                            width: 85,
+                            height: 60,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.card_membership_outlined),
+                                Text(
+                                  "Transfer",
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -203,4 +209,53 @@ class _DashboardState extends State<Dashboard> {
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
+  showAlertDialog(BuildContext context) {
+
+  // set up the buttons
+ 
+  Widget continueButton = TextButton(
+    child: Text("click & Continue", style: Theme.of(context).textTheme.labelMedium,),
+    onPressed:  () {
+      Navigator.pushNamed(context, Routes.recipient);
+    },
+  );
+  Widget card = Card(
+    child: Container(width:25, height: 25,),
+);
+Widget textfield = TextFormField(
+  decoration: InputDecoration( 
+        focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(
+                                    width: 1.0, color: AppColors.textColor2)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: const BorderSide(
+                                    width: 1.0, color: AppColors.textColor2)),),
+
+);
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    backgroundColor: AppColors.secondaryColor,
+    actionsAlignment: MainAxisAlignment.center,
+    
+    icon: Icon(Icons.credit_card, size: 40,),
+    title: Text("Transfer Money"),
+    content: Text("USD"),
+    actions: [
+
+   textfield,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 }
