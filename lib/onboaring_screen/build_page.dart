@@ -23,8 +23,8 @@ class BuildPage extends StatelessWidget {
           children: [
              Image.asset(
               urlImage,
-              width: 275,
-              height: 275,
+              width: 250,
+              height: 250,
             ),
             Text(title,
                 textAlign: TextAlign.center,
@@ -36,7 +36,7 @@ class BuildPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(subtitle,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium),
+                  style: Theme.of(context).textTheme.labelMedium),
             ),
             const SizedBox(
               height: 30,

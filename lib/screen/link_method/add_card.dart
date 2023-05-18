@@ -20,10 +20,11 @@ class _AddCardState extends State<AddCard> {
   Widget build(BuildContext context) {
    double  width = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(title: Text("Add a card"),),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Column(
               children: [
                 Image.asset("assets/images/credit.png", width: width*0.9,),
@@ -36,7 +37,7 @@ class _AddCardState extends State<AddCard> {
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             hintText: "4509 3450 4477 6879",
-                             prefixIcon: Icon(Icons.keyboard, color: AppColors.textColor2,),
+                             prefixIcon: Icon(Icons.keyboard, color: AppColors.textColor,),
                             label: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text("Card Number", style: Theme.of(context).textTheme.labelMedium,),
@@ -52,7 +53,7 @@ class _AddCardState extends State<AddCard> {
                           keyboardType: TextInputType.name,
                           decoration: InputDecoration(
                             hintText: "4509 3450 4477 6879",
-                             prefixIcon: Icon(Icons.account_circle, color: AppColors.textColor2,),
+                             prefixIcon: Icon(Icons.account_circle, color: AppColors.textColor,),
                             label: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text("Cardholder Name", style: Theme.of(context).textTheme.labelMedium,),
@@ -67,7 +68,7 @@ class _AddCardState extends State<AddCard> {
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             hintText: "20/2022",
-                             prefixIcon: Icon(Icons.credit_card, color: AppColors.textColor2,),
+                             prefixIcon: Icon(Icons.credit_card, color: AppColors.textColor,),
                             label: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text("Expiring Month & year", style: Theme.of(context).textTheme.labelMedium,),
@@ -81,7 +82,7 @@ class _AddCardState extends State<AddCard> {
                           controller: cvvController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.credit_card, color: AppColors.textColor2,),
+                            prefixIcon: Icon(Icons.credit_card, color: AppColors.textColor,),
                             hintText: "***",
                             label: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -95,7 +96,7 @@ class _AddCardState extends State<AddCard> {
                         Row(children: [  Checkbox(
                       value: agree,
                       
-                      activeColor: AppColors.primaryColor,
+                      activeColor: AppColors.secondaryColor,
                       onChanged: (value) {
                         setState(() {
                           agree = value ?? false;

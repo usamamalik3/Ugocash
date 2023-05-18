@@ -3,7 +3,8 @@ import 'package:ugocash/config/routes.dart';
 import 'package:ugocash/screen/country_choose.dart';
 import 'package:ugocash/screen/home.dart';
 import 'package:ugocash/styles/colors.dart';
-
+import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -27,9 +28,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
        backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: SafeArea(
+    
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Padding(
@@ -39,14 +40,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                     CircleAvatar(
                       backgroundColor: Colors.white,
-                      radius: 50,
+                      radius: 70,
                       child: Image.asset("assets/images/logo_nobg.png"),
                     ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       "Getting started",
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                   Padding(
@@ -139,10 +140,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                
+                 
+                 
+                        Row(
+                          children: [
+                            Text("Already have account!",  style: Theme.of(context).textTheme.labelMedium),
+                            TextButton(
+                               style: TextButton.styleFrom(backgroundColor: AppColors.textColor2, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),),
+                              onPressed: (() {
+                              
+                            }), child:   Text("Login",  style: Theme.of(context).textTheme.labelMedium),)
+                          ],
+                        ),
+                   const SizedBox(height: 10.0),
                   Center(
                     child: SizedBox(
                       width: width * 0.5,
@@ -155,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: const Padding(
                           padding: EdgeInsets.all(14.0),
                           child: Text(
-                            'Sign up',
+                            'Next',
                             style: TextStyle(
                                 fontSize: 16, color: AppColors.textColor),
                           ),
@@ -163,6 +173,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
+                   const SizedBox(height: 10.0),
+                        Text("Or create account using ",  style: Theme.of(context).textTheme.labelMedium),
+                        const SizedBox(height: 30.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              child: const FaIcon(
+                                FontAwesomeIcons.google, size: 30,
+                                color: AppColors.secondaryColor,),
+                              onTap: () {
+                                setState(() {
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (BuildContext context) {
+                                  //     return ThemeHelper().alartDialog("Google Plus","You tap on GooglePlus social icon.",context);
+                                  //   },
+                                  // );
+                                });
+                              },
+                            ),
+                         const  SizedBox(width: 30.0,),
+                            GestureDetector(
+                              child: FaIcon(
+                                FontAwesomeIcons.phone, size: 30,
+                                color: AppColors.secondaryColor,),
+                              onTap: () {
+                                // setState(() {
+                                //   showDialog(
+                                //     context: context,
+                                //     builder: (BuildContext context) {
+                                //       return ThemeHelper().alartDialog("Twitter","You tap on Twitter social icon.",context);
+                                //     },
+                                //   );
+                                // });
+                              },
+                            ),
+                           const SizedBox(width: 30.0,),
+                            GestureDetector(
+                              child: const FaIcon(
+                                FontAwesomeIcons.facebook, size: 30,
+                                color: AppColors.secondaryColor,),
+                              onTap: () {
+                                // setState(() {
+                                //   showDialog(
+                                //     context: context,
+                                //     builder: (BuildContext context) {
+                                //       return ThemeHelper().alartDialog("Facebook",
+                                //           "You tap on Facebook social icon.",
+                                //           context);
+                                //     },
+                                //   );
+                                // });
+                              },
+                            ),
+                          ],
+                        ),
+                      
                 ],
               ),
             ),

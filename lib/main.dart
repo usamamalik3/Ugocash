@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ugocash/screen/login.dart';
 import 'package:ugocash/screen/register.dart';
+import 'package:ugocash/screen/register2.dart';
 
 import 'package:ugocash/screen/splash_screen.dart';
+import 'package:ugocash/screen/welcom.dart';
 
 import 'package:ugocash/styles/theme.dart';
 
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
        onGenerateRoute: Routes().generateRoute,
       theme: themeData,
-      home: SplashScreen(),
+      home: OnBoarding(),
     );
   }
 }

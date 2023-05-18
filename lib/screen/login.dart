@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       "Let's Sign You In",
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                   Padding(

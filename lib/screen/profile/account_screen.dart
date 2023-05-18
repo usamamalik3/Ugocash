@@ -36,7 +36,7 @@ class AccountScreen extends StatelessWidget {
                       
                       ),
                       subtitle: Text(
-                         "Usama malik ahmed",style: Theme.of(context).textTheme.labelMedium,
+                         "Usama malik ahmed",style: Theme.of(context).textTheme.titleMedium,
                         
                       ),
                     ),
@@ -54,7 +54,7 @@ class AccountScreen extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text("General", style: Theme.of(context).textTheme.labelLarge,),
+                      child: Text("General", style: Theme.of(context).textTheme.titleLarge,),
                     ),
                     Column(
                       children: getChildrenWithSeperator(
@@ -114,7 +114,7 @@ class AccountScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(Icons.logout_outlined, color: Colors.black,),
+            Icon(Icons.logout_outlined, color: AppColors.textColor,),
             // SizedBox(
             //   width: 20,
             //   height: 20,
@@ -161,7 +161,7 @@ class AccountScreen extends StatelessWidget {
           SizedBox(width: 10,),
           Text(
             accountItem.label,
-            style: Theme.of(context).textTheme.labelLarge,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           Spacer(),
           Icon(Icons.arrow_forward_ios)

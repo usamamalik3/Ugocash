@@ -12,16 +12,21 @@ class SecondRegister extends StatefulWidget {
 
 class _SecondRegisterState extends State<SecondRegister> {
  final _formKey = GlobalKey<FormState>();
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController phonenoController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController cnfrmpasswordController = TextEditingController();
+  TextEditingController address1Controller = TextEditingController();
+  TextEditingController address2Controller = TextEditingController();
+  TextEditingController zipcodeController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  
   List<String> usertype=["Individual","Business",
 "Government"];
 String? usertypevalue;
- bool
-  _isObscure1= true;
-  bool _isObscure2= true;
+ 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -42,7 +47,7 @@ String? usertypevalue;
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       "Fill up the other Information to complete",
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                   Padding(
@@ -57,7 +62,7 @@ String? usertypevalue;
                     height: 20,
                   ),
                   TextFormField(
-                    controller: emailController,
+                    controller: firstnameController,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       hintText: "First name",
@@ -71,7 +76,7 @@ String? usertypevalue;
                     height: 20,
                   ),
                    TextFormField(
-                    controller: emailController,
+                    controller: lastnameController,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       hintText: "Last name",
@@ -85,20 +90,21 @@ String? usertypevalue;
                     height: 20,
                   ),
                  DropdownButtonFormField(
+                  style: Theme.of(context).textTheme.labelMedium,
                   decoration: InputDecoration(hintText: "Account Type", hintStyle: Theme.of(context).textTheme.labelMedium),
                
                   focusColor: AppColors.secondaryColor,
                   borderRadius: BorderRadius.circular(12),
                   dropdownColor: AppColors.secondaryColor,
                     
-                        iconEnabledColor: AppColors.textColor2,
+                        iconEnabledColor: AppColors.textColor,
                         isExpanded: true,
                         alignment: AlignmentDirectional.bottomEnd,
                         value: usertypevalue,
                         items: usertype.map((e) {
                           return DropdownMenuItem(
                             value: e,
-                            child: Text(e.toString()),
+                            child: Text(e.toString(), style: Theme.of(context).textTheme.labelMedium,),
                           );
                         }).toList(),
                         onChanged: (newValue) {
@@ -111,10 +117,10 @@ String? usertypevalue;
                     height: 20,
                   ),
                   TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.name,
+                    controller: address1Controller,
+                    keyboardType: TextInputType.streetAddress,
                     decoration: InputDecoration(
-                      hintText: "",
+                      hintText: "Address1",
                       label: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text("Address1", style: Theme.of(context).textTheme.labelMedium,),
@@ -125,10 +131,10 @@ String? usertypevalue;
                     height: 20,
                   ),
                   TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.name,
+                    controller: address2Controller,
+                    keyboardType: TextInputType.streetAddress,
                     decoration: InputDecoration(
-                      hintText: "abc@gmail.com",
+                      hintText: "Address2",
                       label: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text("Address2", style: Theme.of(context).textTheme.labelMedium,),
@@ -139,10 +145,10 @@ String? usertypevalue;
                     height: 20,
                   ),
                   TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.name,
+                    controller: cityController,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: "abc@gmail.com",
+                      hintText: "Delhi",
                       label: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text("City", style: Theme.of(context).textTheme.labelMedium,),
@@ -153,13 +159,27 @@ String? usertypevalue;
                     height: 20,
                   ),
                   TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.name,
+                    controller: zipcodeController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      hintText: "abc@gmail.com",
+                      hintText: "12345",
                       label: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text("Zip code", style: Theme.of(context).textTheme.labelMedium,),
+                      ),
+                    ),
+                  ),
+                   const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: zipcodeController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      hintText: "India",
+                      label: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Country", style: Theme.of(context).textTheme.labelMedium,),
                       ),
                     ),
                   ),
@@ -168,10 +188,10 @@ String? usertypevalue;
                     height: 20,
                   ),
                   TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.name,
+                    controller: stateController,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: "abc@gmail.com",
+                      hintText: "Punjab",
                       label: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text("State", style: Theme.of(context).textTheme.labelMedium,),
@@ -182,10 +202,10 @@ String? usertypevalue;
                     height: 20,
                   ),
                   TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.name,
+                    controller: phoneController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      hintText: "abc@gmail.com",
+                      hintText: "+913457865243",
                       label: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text("Phone", style: Theme.of(context).textTheme.labelMedium,),

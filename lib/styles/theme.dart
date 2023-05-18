@@ -12,14 +12,18 @@ ThemeData themeData = ThemeData(
   scaffoldBackgroundColor: AppColors.backgroundColor,
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        
     backgroundColor: AppColors.primaryColor,
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+   
   )),
   textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(backgroundColor: AppColors.secondaryColor)),
+    
+      style: TextButton.styleFrom(backgroundColor: AppColors.secondaryColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),)),
     
   textTheme: const TextTheme(
     headlineLarge: TextStyle(
-      color: AppColors.textColor2,
+      color: AppColors.textColor,
       fontSize: 32,
     ),
     
@@ -28,29 +32,29 @@ ThemeData themeData = ThemeData(
       fontSize: 32,
     ),
     headlineSmall: TextStyle(
-      letterSpacing: 0.5,
-      color: AppColors.textColor2,
+   
+      color: AppColors.textColor,
       fontSize: 30,
  
     ),
     
     titleMedium: TextStyle(
-      letterSpacing: 1.0,
-      fontSize: 14,
+      fontSize: 16,
       color: AppColors.textColor2,
     ),
     titleLarge: TextStyle(
       color: AppColors.textColor2,
-      fontSize: 24,
+      fontSize: 18,
     
     
     ),
     labelLarge: TextStyle(
-      color: AppColors.textColor2,
+      color: AppColors.textColor,
       fontSize: 18,
     ),
+    
     labelMedium: TextStyle(
-      color: AppColors.textColor2,
+      color: AppColors.textColor,
       fontSize: 16,
     ),
     labelSmall: TextStyle(
@@ -59,12 +63,12 @@ ThemeData themeData = ThemeData(
     ),
   ),
   
-  checkboxTheme: const CheckboxThemeData( side: BorderSide(color: AppColors.textColor2, )),
+  checkboxTheme: const CheckboxThemeData( side: BorderSide(color: AppColors.textColor, )),
   floatingActionButtonTheme:const  FloatingActionButtonThemeData(),
   bottomNavigationBarTheme:  const BottomNavigationBarThemeData(
       backgroundColor: AppColors.secondaryColor,
       unselectedItemColor: AppColors.backgroundColor,
-      selectedItemColor: AppColors.textColor2),
+      selectedItemColor: AppColors.textColor),
       
   inputDecorationTheme: InputDecorationTheme(
     suffixIconColor: AppColors.textColor2,

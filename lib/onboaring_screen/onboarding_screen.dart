@@ -36,7 +36,7 @@ class _OnBoardingState extends State<OnBoarding> {
             },
             children: const [
               BuildPage(
-                urlImage: 'assets/images/dollar.png' ,
+                urlImage: 'assets/images/exchange.png' ,
                 title: 'Leading Payment \nApplication ',
                 subtitle: 'More than 100 million users with 1,000 Thousand partners and ervices in the World',
               ),
@@ -69,15 +69,14 @@ class _OnBoardingState extends State<OnBoarding> {
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setBool('showChoose', true);
                   Navigator.of(context)
-                      .pushReplacementNamed(Routes.register);
+                      .pushReplacementNamed(Routes.welcome);
                 },
                 child: Text(
                   'Get Started',
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
-                      .titleSmall!
-                      .copyWith(color: AppColors.textColor2),
+                      .titleMedium,
                 ),
               ),
             ),
@@ -102,7 +101,7 @@ class _OnBoardingState extends State<OnBoarding> {
                       effect: const WormEffect(
                         spacing: 15,
                         dotColor: AppColors.secondaryColor,
-                        activeDotColor: AppColors.textColor2,
+                        activeDotColor: AppColors.textColor,
                       ),
                       onDotClicked: (index) => controller.animateToPage(
                         index,

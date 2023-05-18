@@ -24,8 +24,15 @@ class _RecipientScreenState extends State<RecipientScreen> {
     Recipient("name1", Icon(Icons.account_circle_outlined)),
     Recipient("name1", Icon(Icons.account_circle_outlined)),
     Recipient("name1", Icon(Icons.account_circle_outlined)),
-   
   ];
+  List<String> customertype = [
+    "Family",
+    "Freind",
+    "Customer",
+    "Services",
+    "Goods",
+  ];
+  String? customertypevalue;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -135,7 +142,7 @@ class _RecipientScreenState extends State<RecipientScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                         TextFormField(
+                        TextFormField(
                           controller: namecontroller,
                           keyboardType: TextInputType.name,
                           decoration: InputDecoration(
@@ -152,6 +159,45 @@ class _RecipientScreenState extends State<RecipientScreen> {
                               child: Text("name"),
                             ),
                           ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        DropdownButtonFormField(
+                          decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                      width: 2.0, color: AppColors.textColor2)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                      width: 2.0, color: AppColors.textColor2)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                      width: 2.0, color: AppColors.textColor2)),
+                              focusColor: AppColors.textColor2,
+                              hintText: "Customer Type",
+                              hintStyle:
+                                  Theme.of(context).textTheme.titleMedium),
+                          borderRadius: BorderRadius.circular(12),
+                          dropdownColor: AppColors.secondaryColor,
+                          iconEnabledColor: AppColors.textColor2,
+                          isExpanded: true,
+                          alignment: AlignmentDirectional.bottomEnd,
+                          value: customertypevalue,
+                          items: customertype.map((e) {
+                            return DropdownMenuItem(
+                              value: e,
+                              child: Text(e.toString()),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              customertypevalue = newValue.toString();
+                            });
+                          },
                         ),
                         const SizedBox(
                           height: 10,
@@ -198,18 +244,17 @@ class _RecipientScreenState extends State<RecipientScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                         
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            
                             SizedBox(
                               width: width * 0.25,
                               child: TextButton(
                                 onPressed: () {
                                   // _loginWithPhoneNumber(phonecontroller.text);
 
-                                   Navigator.pushReplacementNamed(context, Routes.confrmtranscation);
+                                  Navigator.pushReplacementNamed(
+                                      context, Routes.confrmtranscation);
                                 },
                                 child: const Padding(
                                   padding: EdgeInsets.all(14.0),
