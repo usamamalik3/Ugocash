@@ -35,14 +35,14 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                         width: 50,
                         height: 50,
                         color: Colors.grey,
-                        child: Image.asset("assets/icons/bank.png"),
+                        child: Image.asset("assets/images/bank.png"),
                       ),
                       SizedBox(
                         width: 5,
                       ),
                       Text(
                         "City Bank",
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context).textTheme.titleMedium,
                       )
                     ],
                   ),
@@ -65,7 +65,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                       children: [
                         Text(
                           "Transcation Details",
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                         const SizedBox(
                           height: 8,
@@ -82,11 +82,11 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           children: [
                             Text(
                               "To",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             Text(
                               "Dummy",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
                         ),
@@ -108,11 +108,11 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           children: [
                             Text(
                               "credit card",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             Text(
                               "Dummy",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
                         ),
@@ -134,11 +134,11 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           children: [
                             Text(
                               "Transaction fee",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             Text(
                               "Dummy",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
                         ),
@@ -160,11 +160,11 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           children: [
                             Text(
                               "Total ammount",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             Text(
                               "\$125489",
-                              style: Theme.of(context).textTheme.labelMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
                         ),

@@ -75,30 +75,38 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: Container(
-                        width: width*0.4,
-                        height: height*0.25,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-      "assets/icons/bank.svg",
-      width: 35,
-      height: 35,
-      color: AppColors.textColor2,
-      // semanticsLabel: 'Label'
-    ),
-                              SizedBox(height: 10,),
-                              Text(
-                                "Link Bank\n Account",
-                                style: Theme.of(context).textTheme.titleLarge,
-                              )
-                            ],
+                    GestureDetector(
+                      onTap:(){
+                        Navigator.pushNamed(context, Routes.addbank);
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Container(
+                          width: width * 0.4,
+                          height: height * 0.25,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/bank.svg",
+                                  width: 35,
+                                  height: 35,
+                                  color: AppColors.textColor2,
+                                  // semanticsLabel: 'Label'
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Link Bank\n Account",
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -107,69 +115,76 @@ class _DashboardState extends State<Dashboard> {
                       onTap: () {
                         showAlertDialog(context);
                       },
-                      child:   Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: Container(
-                        width: width*0.4,
-                        height: height*0.25,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.send_to_mobile, size: 50,),
-                              SizedBox(height: 10,),
-                              Text(
-                                "Send\n Money",
-                                style: Theme.of(context).textTheme.titleLarge,
-                              )
-                            ],
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Container(
+                          width: width * 0.4,
+                          height: height * 0.25,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.send_to_mobile,
+                                  size: 50,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Send\n Money",
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  
-                    ),
-                  
                   ],
                 ),
               ),
-               Padding(
+              Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                   
                     GestureDetector(
                       onTap: () {
                         // showAlertDialog(context);
                       },
-                      child:   Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: Container(
-                        width: width*0.4,
-                        height: height*0.25,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.wallet_outlined, size: 50,),
-                              SizedBox(height: 10,),
-                              Text(
-                                "Add money\n to Wallet",
-                                style: Theme.of(context).textTheme.titleLarge,
-                              )
-                            ],
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Container(
+                          width: width * 0.4,
+                          height: height * 0.25,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.wallet_outlined,
+                                  size: 50,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Add money\n to Wallet",
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  
-                    ),
-                  
                   ],
                 ),
               ),

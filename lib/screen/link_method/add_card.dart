@@ -20,7 +20,7 @@ class _AddCardState extends State<AddCard> {
   Widget build(BuildContext context) {
    double  width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(title: Text("Add a card"),),
+      appBar: AppBar(title: Text("Link a card"),),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -123,7 +123,7 @@ class _AddCardState extends State<AddCard> {
                           child: const Padding(
                             padding: EdgeInsets.all(14.0),
                             child: Text(
-                              'Add card',
+                              'Link card',
                               style: TextStyle(
                                   fontSize: 16, color: AppColors.textColor),
                             ),

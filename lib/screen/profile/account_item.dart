@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ugocash/config/routes.dart';
 
 class AccountItem {
    String label;
@@ -10,15 +11,17 @@ class AccountItem {
 
 List<AccountItem> accountItems = [
   AccountItem("Address" ,  (context) {
+    Navigator.pushNamed(context, Routes.addressdetails);
     
-  }, Icon(Icons.home),),
+  }, const Icon(Icons.home),),
   AccountItem("Transaction history", (context) {
-    
-  }, Icon(Icons.receipt),),
+    Navigator.pushNamed(context, Routes.transactionhistory);
+  }, const Icon(Icons.receipt),),
   AccountItem(
       "Contract", (context) {
+        // Navigator.pushNamed(context, Routes.addressdetails);
     
-  }, Icon(Icons.group),),
+  }, const Icon(Icons.group),),
  
   
   
@@ -26,12 +29,12 @@ List<AccountItem> accountItems = [
 ];
 
 List<AccountItem> accountItems2 = [
-  AccountItem("Address" ,  (context) {
+  AccountItem("Setting" ,  (context) {
     
-  },Icon(Icons.settings),),
-  AccountItem("Transaction history", (context) {
+  }, const Icon(Icons.settings),),
+  AccountItem("Help Centre", (context) {
     
-  }, Icon(Icons.help_center),),
+  },  const Icon(Icons.help_center),),
  
   
   

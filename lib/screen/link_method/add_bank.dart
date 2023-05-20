@@ -24,7 +24,7 @@ class _AddBankState extends State<AddBank> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add a card"),
+        title: Text("Link Bank account"),
       ),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -50,7 +50,7 @@ class _AddBankState extends State<AddBank> {
                           controller: carNameController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: "First name",
+                            hintText: "Jack",
                             prefixIcon: Icon(
                               Icons.account_circle,
                               color: AppColors.textColor,
@@ -58,7 +58,7 @@ class _AddBankState extends State<AddBank> {
                             label: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "First name",
+                                "Account Holder name",
                                 style: Theme.of(context).textTheme.labelMedium,
                               ),
                             ),
@@ -90,6 +90,7 @@ class _AddBankState extends State<AddBank> {
                         ),
                         DropdownButtonHideUnderline(
                           child: DropdownButton2<String>(
+                         
                             isExpanded: true,
                             
                            hint: Padding(
@@ -100,10 +101,11 @@ class _AddBankState extends State<AddBank> {
                             items: banklist
                                 .map((bank) => DropdownMenuItem(
                                       value: bank,
-                                      child: Text(
-                                        bank,
-                                        style: const TextStyle(
-                                          fontSize: 14,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          bank,
+                                          style: Theme.of(context).textTheme.labelMedium
                                         ),
                                       ),
                                     ))
@@ -152,22 +154,22 @@ class _AddBankState extends State<AddBank> {
                                     ),
                                     hintText: 'Search for an item...',
                                     hintStyle:
-                                        Theme.of(context).textTheme.labelMedium,
+                                        Theme.of(context).textTheme.titleMedium,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(16),
                                         borderSide: const BorderSide(
                                             width: 2.0,
-                                            color: AppColors.textColor)),
+                                            color: AppColors.textColor2)),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(16),
                                         borderSide: const BorderSide(
                                             width: 2.0,
-                                            color: AppColors.textColor)),
+                                            color: AppColors.textColor2)),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(16),
                                       borderSide: const BorderSide(
                                           width: 2.0,
-                                          color: AppColors.textColor),
+                                          color: AppColors.textColor2),
                                     ),
                                   ),
                                 ),
@@ -238,7 +240,7 @@ class _AddBankState extends State<AddBank> {
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             prefixIcon: Icon(
-                              Icons.credit_card,
+                              Icons.account_circle_rounded,
                               color: AppColors.textColor,
                             ),
                             hintText: "username",
@@ -259,7 +261,7 @@ class _AddBankState extends State<AddBank> {
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             prefixIcon: Icon(
-                              Icons.credit_card,
+                              Icons.password,
                               color: AppColors.textColor,
                             ),
                             hintText: "********",
@@ -307,7 +309,7 @@ class _AddBankState extends State<AddBank> {
                               child: const Padding(
                                 padding: EdgeInsets.all(14.0),
                                 child: Text(
-                                  'Add Bank',
+                                  'Link Bank',
                                   style: TextStyle(
                                       fontSize: 16, color: AppColors.textColor),
                                 ),

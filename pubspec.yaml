@@ -44,6 +44,7 @@ dependencies:
   shared_preferences: ^2.1.1
   searchfield: ^0.8.0
   font_awesome_flutter: ^10.4.0
+  flutter_holo_date_picker: ^1.1.0
  
 
 dev_dependencies:

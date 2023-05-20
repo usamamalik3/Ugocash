@@ -172,21 +172,7 @@ String? usertypevalue;
                    const SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
-                    controller: zipcodeController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: "India",
-                      label: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("Country", style: Theme.of(context).textTheme.labelMedium,),
-                      ),
-                    ),
-                  ),
-
-                   const SizedBox(
-                    height: 20,
-                  ),
+                 
                   TextFormField(
                     controller: stateController,
                     keyboardType: TextInputType.text,
@@ -198,6 +184,21 @@ String? usertypevalue;
                       ),
                     ),
                   ),
+                   const SizedBox(
+                    height: 20,
+                  ),
+                   TextFormField(
+                    controller: zipcodeController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      hintText: "India",
+                      label: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Country", style: Theme.of(context).textTheme.labelMedium,),
+                      ),
+                    ),
+                  ),
+
                    const SizedBox(
                     height: 20,
                   ),

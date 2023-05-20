@@ -6,6 +6,8 @@ import 'package:ugocash/screen/confirm_transaction.dart';
 
 import 'package:ugocash/screen/home.dart';
 import 'package:ugocash/screen/login.dart';
+import 'package:ugocash/screen/profile/address_details.dart';
+import 'package:ugocash/screen/profile/transaction_history.dart';
 
 
 import 'package:ugocash/screen/recipient/add_recipient.dart';
@@ -29,7 +31,9 @@ static const String welcome ="/welcome";
   static const String addrecipient ='/addrecipient';
   static const String addcard ="/addcard";
   static const String addbank = "/addbank";
-  static const String confrmtranscation ="confirmtransc";
+  static const String confrmtranscation ="/confirmtransc";
+  static const String addressdetails="/addressdetails";
+  static const String transactionhistory ="/transactionhistory";
   Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
        case onboarding:
@@ -61,6 +65,10 @@ static const String welcome ="/welcome";
              return MaterialPageRoute<AddCard>(builder: (context) => const AddCard());
         case confrmtranscation:
              return MaterialPageRoute<ConfirmTranscation>(builder: (context) => const ConfirmTranscation());
+         case addressdetails:
+             return MaterialPageRoute<AdressDetails>(builder: (context) => const AdressDetails());
+         case transactionhistory:
+             return MaterialPageRoute<TransactionHistory>(builder: (context) => const TransactionHistory());
 
       default:
         return MaterialPageRoute<RegisterScreen>(

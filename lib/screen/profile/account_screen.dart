@@ -146,26 +146,31 @@ class AccountScreen extends StatelessWidget {
     return CircleAvatar(
       radius: 5.0,
    
-      backgroundColor: AppColors.primaryColor.withOpacity(0.7),
+      backgroundColor: AppColors.primaryColor.withOpacity(0.5),
     );
   }
 
   Widget getAccountItemWidget(AccountItem accountItem  , context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 15),
-      padding: EdgeInsets.symmetric(horizontal: 25),
-      child: Row(
-        children: [
-        
-          accountItem.icon,
-          SizedBox(width: 10,),
-          Text(
-            accountItem.label,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          Spacer(),
-          Icon(Icons.arrow_forward_ios)
-        ],
+    return InkWell(
+      onTap: () {
+        accountItem.onPressed(context);
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 15),
+        padding: EdgeInsets.symmetric(horizontal: 25),
+        child: Row(
+          children: [
+          
+            accountItem.icon,
+            SizedBox(width: 10,),
+            Text(
+              accountItem.label,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            Spacer(),
+            Icon(Icons.arrow_forward_ios)
+          ],
+        ),
       ),
     );
   }
