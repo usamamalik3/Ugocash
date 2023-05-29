@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../styles/colors.dart';
 
@@ -12,6 +13,8 @@ class SecondRegister extends StatefulWidget {
 
 class _SecondRegisterState extends State<SecondRegister> {
  final _formKey = GlobalKey<FormState>();
+ TextEditingController phonecontroller=TextEditingController();
+String? countrycode;
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -202,20 +205,30 @@ String? usertypevalue;
                    const SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
-                    controller: phoneController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: "+913457865243",
-                      label: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("Phone", style: Theme.of(context).textTheme.labelMedium,),
-                      ),
-                    ),
-                  ),
-                   const SizedBox(
-                    height: 20,
-                  ),
+                   IntlPhoneField(
+              initialCountryCode: "IN",
+              dropdownTextStyle: Theme.of(context).textTheme.labelMedium,
+              controller: phonecontroller,
+              style:  Theme.of(context).textTheme.labelMedium,
+              decoration: InputDecoration(
+                labelStyle: Theme.of(context).textTheme.labelMedium,
+                labelText: 'Phone Number',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(
+                        width: 2.0, color: AppColors.secondaryColor)),
+              ),
+              onChanged: (phone) {
+                print(phone.completeNumber);
+                setState(() {
+                 countrycode=phone.countryCode;
+                 
+                });
+              },
+              onCountryChanged: (country) {
+                print('Country changed to: ' + country.name);
+              },
+            ),
                  
                   Center(
                     child: SizedBox(

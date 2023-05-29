@@ -1,3 +1,7 @@
+
+
+
+
 import 'package:flutter/material.dart';
 import 'package:ugocash/onboaring_screen/onboarding_screen.dart';
 import 'package:ugocash/screen/link_method/add_bank.dart';
@@ -6,6 +10,8 @@ import 'package:ugocash/screen/confirm_transaction.dart';
 
 import 'package:ugocash/screen/home.dart';
 import 'package:ugocash/screen/login.dart';
+import 'package:ugocash/screen/otp.dart';
+import 'package:ugocash/screen/phone_register.dart';
 import 'package:ugocash/screen/profile/address_details.dart';
 import 'package:ugocash/screen/profile/transaction_history.dart';
 
@@ -34,7 +40,10 @@ static const String welcome ="/welcome";
   static const String confrmtranscation ="/confirmtransc";
   static const String addressdetails="/addressdetails";
   static const String transactionhistory ="/transactionhistory";
+  static const String phonenoregister ="/phoneregister";
+  static const String otpscreen="/otpscreen";
   Route<dynamic> generateRoute(RouteSettings routeSettings) {
+
     switch (routeSettings.name) {
        case onboarding:
        return MaterialPageRoute<OnBoarding>(
@@ -49,6 +58,10 @@ static const String welcome ="/welcome";
        case secondregister:
        return MaterialPageRoute<SecondRegister>(
             builder: (context) => const SecondRegister());
+      case phonenoregister:
+       return MaterialPageRoute<PhonenoRegister>(builder: (context)=> const PhonenoRegister());
+       case otpscreen:
+        return MaterialPageRoute(builder: (context)=>  OtpScreeen(verificationId: routeSettings.arguments as String));
             case login:
        return MaterialPageRoute<LoginScreen>(
             builder: (context) => const LoginScreen());

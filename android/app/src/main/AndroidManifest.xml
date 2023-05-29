@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ugocash">
+    package="com.project.ugocash">
    <application
         android:label="ugocash"
         android:name="${applicationName}"

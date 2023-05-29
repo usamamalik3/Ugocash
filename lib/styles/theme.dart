@@ -7,7 +7,7 @@ ThemeData themeData = ThemeData(
   
   cardColor: AppColors.secondaryColor,
   bottomSheetTheme: BottomSheetThemeData(backgroundColor: AppColors.backgroundColor),
-  iconTheme: IconThemeData(color: AppColors.textColor2),
+  iconTheme: IconThemeData(color: AppColors.textColor),
 
   scaffoldBackgroundColor: AppColors.backgroundColor,
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -40,10 +40,10 @@ ThemeData themeData = ThemeData(
     
     titleMedium: TextStyle(
       fontSize: 16,
-      color: AppColors.textColor2,
+      color: AppColors.textColor,
     ),
     titleLarge: TextStyle(
-      color: AppColors.textColor2,
+      color: AppColors.textColor,
       fontSize: 18,
     
     
@@ -58,7 +58,7 @@ ThemeData themeData = ThemeData(
       fontSize: 16,
     ),
     labelSmall: TextStyle(
-      color: AppColors.textColor2,
+      color: AppColors.textColor,
       fontSize: 12,
     ),
   ),
@@ -71,7 +71,7 @@ ThemeData themeData = ThemeData(
       selectedItemColor: AppColors.textColor),
       
   inputDecorationTheme: InputDecorationTheme(
-    suffixIconColor: AppColors.textColor2,
+    suffixIconColor: AppColors.textColor,
     labelStyle: const TextStyle(
       color: AppColors.textColor2
     ),

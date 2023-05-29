@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ugocash/screen/login.dart';
 import 'package:ugocash/screen/register.dart';
@@ -11,9 +12,10 @@ import 'package:ugocash/styles/theme.dart';
 import 'config/routes.dart';
 import 'onboaring_screen/onboarding_screen.dart';
 
+
 void main() async {
-  //  WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
        onGenerateRoute: Routes().generateRoute,
       theme: themeData,
-      home: SplashScreen(),
+      home: RegisterScreen(),
     );
   }
 }

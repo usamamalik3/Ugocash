@@ -46,7 +46,7 @@ class _DashboardState extends State<Dashboard> {
                           : null,
                       // Add a search icon or button to the search bar
                       prefixIcon: IconButton(
-                        color: AppColors.textColor,
+                       
                         icon: Icon(Icons.search),
                         onPressed: () {
                           // Perform the search here

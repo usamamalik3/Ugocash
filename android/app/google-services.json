@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "799443438677",
+    "project_id": "ugocash-70d25",
+    "storage_bucket": "ugocash-70d25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799443438677:android:fc497d8d55ccfff89e58dc",
+        "android_client_info": {
+          "package_name": "com.project.ugocash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799443438677-donoheo45pm0i8h1jh8erd41727utia8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.ugocash",
+            "certificate_hash": "28e955ec328d10240894ce9250f787683d3bf3f2"
+          }
+        },
+        {
+          "client_id": "799443438677-l3ck9fi35dsab42rceji3e54df5qhbn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW5GE7Jsp_TSCuGnrrnXDKBTZ_nIsz2jI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799443438677-l3ck9fi35dsab42rceji3e54df5qhbn9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

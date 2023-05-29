@@ -1,4 +1,4 @@
-package com.example.ugocash
+package com.project.ugocash
 
 import io.flutter.embedding.android.FlutterActivity
 
