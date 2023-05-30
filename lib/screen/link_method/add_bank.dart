@@ -154,7 +154,7 @@ class _AddBankState extends State<AddBank> {
                                     ),
                                     hintText: 'Search for an item...',
                                     hintStyle:
-                                        Theme.of(context).textTheme.titleMedium,
+                                        Theme.of(context).textTheme.titleLarge,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(16),
                                         borderSide: const BorderSide(

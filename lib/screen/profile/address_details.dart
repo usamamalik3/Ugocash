@@ -46,14 +46,14 @@ class _AdressDetailsState extends State<AdressDetails> {
                       ),
                       Text(
                         "+91315-4587623",
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
                         "130 Avenue Flushing NY",
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Text(
                         "Default Address",

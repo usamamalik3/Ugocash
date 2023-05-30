@@ -7,11 +7,12 @@ ThemeData themeData = ThemeData(
   
   cardColor: AppColors.secondaryColor,
   bottomSheetTheme: BottomSheetThemeData(backgroundColor: AppColors.backgroundColor),
-  iconTheme: IconThemeData(color: AppColors.textColor),
+  iconTheme: IconThemeData(color: AppColors.textColor2),
 
   scaffoldBackgroundColor: AppColors.backgroundColor,
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        
         
     backgroundColor: AppColors.primaryColor,
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -43,8 +44,8 @@ ThemeData themeData = ThemeData(
       color: AppColors.textColor,
     ),
     titleLarge: TextStyle(
-      color: AppColors.textColor,
-      fontSize: 18,
+      color: AppColors.textColor2,
+      fontSize: 16,
     
     
     ),

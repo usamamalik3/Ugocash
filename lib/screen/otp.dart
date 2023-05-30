@@ -19,10 +19,36 @@ final String verificationId;
 
 class _OtpScreeenState extends State<OtpScreeen> {
   OtpFieldController otpController = OtpFieldController();
+  String? pincode;
   @override
   
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    void resendOTP(String phoneNumber) async {
+        FirebaseAuth _auth = FirebaseAuth.instance;
+  await _auth.verifyPhoneNumber(
+    phoneNumber: phoneNumber,
+    verificationCompleted: (PhoneAuthCredential credential) async {
+      // Automatically sign in the user on Android devices that support automatic SMS verification
+      UserCredential result = await _auth.signInWithCredential(credential);
+      User user = result.user!;
+      print(user.uid);
+    },
+    verificationFailed: (FirebaseAuthException e) {
+      print(e.message);
+    },
+    codeSent: (String verificationId, int? resendToken) {
+      // Handle code sent callback
+      print('Code Sent: $verificationId');
+    },
+    codeAutoRetrievalTimeout: (String verificationId) {
+      // Auto-retrieval timeout
+      print('Timeout: $verificationId');
+    },
+    timeout: Duration(seconds: 60),
+  );
+}
+
     
 Future<void> _submitOTP(otp) async {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -41,7 +67,7 @@ Future<void> _submitOTP(otp) async {
   print("new user created");
   }
   else{
-    Navigator.pushReplacementNamed(context, "/dashboard");
+    Navigator.pushReplacementNamed(context, Routes.secondregister);
   }
   }
   catch(e) {
@@ -84,10 +110,14 @@ Future<void> _submitOTP(otp) async {
                 outlineBorderRadius: 15,
                 style: const TextStyle(fontSize: 17, color: AppColors.textColor),
                 onChanged: (pin) {
+
                   print("Changed: $pin");
                 },
                 onCompleted: (pin) {
                   // _submitOTP(pin);
+                  setState(() {
+                    pincode= pin;
+                  });
                   print("Completed: $pin");
                 }),
              Padding(
@@ -98,9 +128,7 @@ Future<void> _submitOTP(otp) async {
                     onPressed: () {
                       // _loginWithPhoneNumber(phonecontroller.text);
                     
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) =>const RegisterScreen()),
-                      );
+                     _submitOTP(pincode);
                     },
                    
                     child: const Padding(
@@ -115,7 +143,9 @@ Future<void> _submitOTP(otp) async {
              ),
               TextButton(
                 style: TextButton.styleFrom(backgroundColor: AppColors.backgroundColor),
-                onPressed: (){}, child: Text("Resend Again" ,style: Theme.of(context).textTheme.labelMedium,))
+                onPressed: (){
+                  
+                }, child: Text("Resend Again" ,style: Theme.of(context).textTheme.labelMedium,))
           ],
         ),
       ),

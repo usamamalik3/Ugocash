@@ -29,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   
  bool _isObscure1= true;
   bool _isObscure2= true;
-  static Future<User?> signInWithGoogle(context) async {
+   Future<User?> signInWithGoogle(context) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
@@ -45,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             backgroundColor: Colors.white,
             textColor: Colors.black,
             fontSize: 16.0);
-        Navigator.pushNamed(context, Routes.secondregister);
+        Navigator.pushNamed(context, Routes.secondregister, arguments: emailController.text);
         
 
     if (googleSignInAccount != null) {
@@ -122,7 +122,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             backgroundColor: Colors.white,
             textColor: Colors.black,
             fontSize: 16.0);
-             Navigator.pushReplacementNamed(context, Routes.secondregister);
+           // ignore: use_build_context_synchronously
+           Navigator.pushNamed(context, Routes.secondregister, arguments: emailController.text);
+        
 
         // firestoreInstance.collection("users").doc(firebaseUser.uid).set({
         //   "email": emailController.text,
@@ -163,6 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
@@ -197,7 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     keyboardType: TextInputType.name,
                     validator:  MultiValidator([
                         RequiredValidator(errorText: "Required"),
-                        EmailValidator(errorText: "ای میل درست نہیں ہے۔")
+                        EmailValidator(errorText: "Email is not valid")
                       ]),
                     decoration: InputDecoration(
                       hintText: "abc@gmail.com",
@@ -208,10 +211,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-              
-                  const SizedBox(
+                const SizedBox(
                     height: 20,
                   ),
+                 
                   TextFormField(
                      style: Theme.of(context).textTheme.labelMedium,
                     controller: passwordController,
@@ -221,7 +224,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         RequiredValidator(errorText: "Required"),
                         MinLengthValidator(8,
                             errorText: "Password should be 8 character"),
-                        PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+                        PatternValidator(r'(?=._*?[#?!@$%^&*-])',
                             errorText:
                                 "Password should have atleast one special character"),
                       ]),
@@ -286,6 +289,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             TextButton(
                                style: TextButton.styleFrom(backgroundColor: AppColors.textColor2, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),),
                               onPressed: (() {
+                                Navigator.pushNamed(context, Routes.login);
                               
                             }), child:   Text("Login",  style: Theme.of(context).textTheme.labelMedium),)
                           ],
@@ -298,7 +302,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           // _loginWithPhoneNumber(phonecontroller.text);
                           _signup();
-                         
+                        
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(14.0),
@@ -311,66 +315,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                   const SizedBox(height: 10.0),
-                        Text("Or create account using ",  style: Theme.of(context).textTheme.labelMedium),
-                        const SizedBox(height: 30.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                              child: const FaIcon(
-                                FontAwesomeIcons.google, size: 30,
-                                color: AppColors.secondaryColor,),
-                              onTap: () {
-                                signInWithGoogle(context);
-                              
-                                setState(() {
-                                  // showDialog(
-                                  //   context: context,
-                                  //   builder: (BuildContext context) {
-                                  //     return ThemeHelper().alartDialog("Google Plus","You tap on GooglePlus social icon.",context);
-                                  //   },
-                                  // );
-                                });
-                              },
-                            ),
-                         const  SizedBox(width: 30.0,),
-                            InkWell(
-                              child: const FaIcon(
-                                FontAwesomeIcons.phone, size: 30,
-                                color: AppColors.secondaryColor,),
-                              onTap: () {
-                                Navigator.pushNamed(context, Routes.phonenoregister);
-                                // setState(() {
-                                //   showDialog(
-                                //     context: context,
-                                //     builder: (BuildContext context) {
-                                //       return ThemeHelper().alartDialog("Twitter","You tap on Twitter social icon.",context);
-                                //     },
-                                //   );
-                                // });
-                              },
-                            ),
-                           const SizedBox(width: 30.0,),
-                            InkWell(
-                              child: const FaIcon(
-                                FontAwesomeIcons.facebook, size: 30,
-                                color: AppColors.secondaryColor,),
-                              onTap: () {
-                                // setState(() {
-                                //   showDialog(
-                                //     context: context,
-                                //     builder: (BuildContext context) {
-                                //       return ThemeHelper().alartDialog("Facebook",
-                                //           "You tap on Facebook social icon.",
-                                //           context);
-                                //     },
-                                //   );
-                                // });
-                              },
-                            ),
-                          ],
-                        ),
+                  //  const SizedBox(height: 10.0),
+                  //       Text("Or create account using ",  style: Theme.of(context).textTheme.labelMedium),
+                  //       const SizedBox(height: 30.0),
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                           
+                  //        const  SizedBox(width: 30.0,),
+                  //           InkWell(
+                  //             child: const FaIcon(
+                  //               FontAwesomeIcons.phone, size: 30,
+                  //               color: AppColors.secondaryColor,),
+                  //             onTap: () {
+                  //               Navigator.pushNamed(context, Routes.phonenoregister);
+                  //               // setState(() {
+                  //               //   showDialog(
+                  //               //     context: context,
+                  //               //     builder: (BuildContext context) {
+                  //               //       return ThemeHelper().alartDialog("Twitter","You tap on Twitter social icon.",context);
+                  //               //     },
+                  //               //   );
+                  //               // });
+                  //             },
+                  //           ),
+                         
+                  //         ],
+                  //       ),
                       
                 ],
               ),

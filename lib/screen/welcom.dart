@@ -60,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: TextButton(
               child: Text(
                 'Sign Up',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               onPressed: () {
                 Navigator.of(context)

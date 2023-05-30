@@ -36,7 +36,7 @@ class AccountScreen extends StatelessWidget {
                       
                       ),
                       subtitle: Text(
-                         "Usama malik ahmed",style: Theme.of(context).textTheme.titleMedium,
+                         "Usama malik ahmed",style: Theme.of(context).textTheme.titleLarge,
                         
                       ),
                     ),

@@ -42,7 +42,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                       ),
                       Text(
                         "City Bank",
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: Theme.of(context).textTheme.titleLarge,
                       )
                     ],
                   ),
@@ -82,11 +82,11 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           children: [
                             Text(
                               "To",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text(
                               "Dummy",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
                         ),
@@ -108,11 +108,11 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           children: [
                             Text(
                               "credit card",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text(
                               "Dummy",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
                         ),
@@ -134,11 +134,11 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           children: [
                             Text(
                               "Transaction fee",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text(
                               "Dummy",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
                         ),
@@ -160,11 +160,11 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           children: [
                             Text(
                               "Total ammount",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text(
                               "\$125489",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
                         ),

@@ -76,7 +76,7 @@ class _OnBoardingState extends State<OnBoarding> {
                   textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
-                      .titleMedium,
+                      .titleLarge,
                 ),
               ),
             ),

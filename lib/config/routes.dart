@@ -57,7 +57,7 @@ static const String welcome ="/welcome";
       
        case secondregister:
        return MaterialPageRoute<SecondRegister>(
-            builder: (context) => const SecondRegister());
+            builder: (context) =>  SecondRegister(email: routeSettings.arguments as String,));
       case phonenoregister:
        return MaterialPageRoute<PhonenoRegister>(builder: (context)=> const PhonenoRegister());
        case otpscreen:

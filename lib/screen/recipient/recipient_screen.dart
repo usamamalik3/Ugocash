@@ -180,7 +180,7 @@ class _RecipientScreenState extends State<RecipientScreen> {
                               focusColor: AppColors.textColor2,
                               hintText: "Customer Type",
                               hintStyle:
-                                  Theme.of(context).textTheme.titleMedium),
+                                  Theme.of(context).textTheme.titleLarge),
                           borderRadius: BorderRadius.circular(12),
                           dropdownColor: AppColors.secondaryColor,
                           iconEnabledColor: AppColors.textColor2,
