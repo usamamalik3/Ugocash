@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ugocash/screen/document.dart';
+import 'package:ugocash/screen/home.dart';
+import 'package:ugocash/screen/kyc.dart';
 import 'package:ugocash/screen/login.dart';
 import 'package:ugocash/screen/register.dart';
 import 'package:ugocash/screen/register2.dart';
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
        onGenerateRoute: Routes().generateRoute,
       theme: themeData,
-      home: RegisterScreen(),
+      home: DocumentScreen(),
     );
   }
 }

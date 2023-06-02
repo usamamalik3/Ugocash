@@ -32,7 +32,7 @@ class _OnBoardingState extends State<OnBoarding> {
           child: PageView(
             controller: controller,
             onPageChanged: (index) {
-              setState(() => isLastPage = index == 2);
+              setState(() => isLastPage = index == 1);
             },
             children: const [
               BuildPage(
@@ -45,12 +45,12 @@ class _OnBoardingState extends State<OnBoarding> {
                 title: 'Prestige and Absolute \n Security',
                 subtitle: 'Select your bank\n Link your Account \n Transfer Money\n Add Money to your Wallet',
               ),
-              BuildPage(
-                urlImage: 'assets/images/exchange3.png',
-                title: 'Receive "Hot" Gift from \n UgoCash Right Away.',
-                subtitle:
-                    'Sign up now to recieve a large gift pac. Eating, watching movies & many other services.',
-              ),
+              // BuildPage(
+              //   urlImage: 'assets/images/exchange3.png',
+              //   title: 'Receive "Hot" Gift from \n UgoCash Right Away.',
+              //   subtitle:
+              //       'Sign up now to recieve a large gift pac. Eating, watching movies & many other services.',
+              // ),
               
             ],
           ),
@@ -97,7 +97,7 @@ class _OnBoardingState extends State<OnBoarding> {
                   Center(
                     child: SmoothPageIndicator(
                       controller: controller,
-                      count: 3,
+                      count: 2,
                       effect: const WormEffect(
                         spacing: 15,
                         dotColor: AppColors.secondaryColor,

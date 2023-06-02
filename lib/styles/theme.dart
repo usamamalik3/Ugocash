@@ -42,6 +42,7 @@ ThemeData themeData = ThemeData(
     titleMedium: TextStyle(
       fontSize: 16,
       color: AppColors.textColor,
+      fontWeight: FontWeight.bold,
     ),
     titleLarge: TextStyle(
       color: AppColors.textColor2,

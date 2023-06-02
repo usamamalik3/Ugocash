@@ -36,7 +36,7 @@ class BuildPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(subtitle,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelMedium),
+                  style: Theme.of(context).textTheme.titleMedium),
             ),
             const SizedBox(
               height: 30,

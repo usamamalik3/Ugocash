@@ -2,40 +2,34 @@
 import 'dart:convert';
 
 class UserModel {
-   String? email;
-  String? phoneno;
-  String? password;
+  String? email;
+  String? id;
   UserModel({
     this.email,
-    this.phoneno,
-    this.password,
+    this.id,
   });
 
   UserModel copyWith({
     String? email,
-    String? phoneno,
-    String? password,
+    String? id,
   }) {
     return UserModel(
       email: email ?? this.email,
-      phoneno: phoneno ?? this.phoneno,
-      password: password ?? this.password,
+      id: id ?? this.id,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'email': email,
-      'phoneno': phoneno,
-      'password': password,
+      'id': id,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       email: map['email'] != null ? map['email'] as String : null,
-      phoneno: map['phoneno'] != null ? map['phoneno'] as String : null,
-      password: map['password'] != null ? map['password'] as String : null,
+      id: map['id'] != null ? map['id'] as String : null,
     );
   }
 
@@ -44,7 +38,7 @@ class UserModel {
   factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'UserModel(email: $email, phoneno: $phoneno, password: $password)';
+  String toString() => 'UserModel(email: $email, id: $id)';
 
   @override
   bool operator ==(covariant UserModel other) {
@@ -52,10 +46,9 @@ class UserModel {
   
     return 
       other.email == email &&
-      other.phoneno == phoneno &&
-      other.password == password;
+      other.id == id;
   }
 
   @override
-  int get hashCode => email.hashCode ^ phoneno.hashCode ^ password.hashCode;
+  int get hashCode => email.hashCode ^ id.hashCode;
 }

@@ -40,24 +40,70 @@ class _AdressDetailsState extends State<AdressDetails> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Street address",
-                        style: Theme.of(context).textTheme.titleLarge,
+                      Row(
+                        children: [
+                          Text(
+                            "Street:",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          SizedBox(width: 5,),
+                           Text(
+                            "dummy",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ],
                       ),
-                      Text(
-                        "+91315-4587623",
-                        style: Theme.of(context).textTheme.titleLarge,
+                       Row(
+                        children: [
+                          Text(
+                            "Apartment#:",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          SizedBox(width: 5,),
+                           Text(
+                            "401",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        "130 Avenue Flushing NY",
-                        style: Theme.of(context).textTheme.titleLarge,
+                       Row(
+                        children: [
+                          Text(
+                            "City:",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          SizedBox(width: 5,),
+                           Text(
+                            "New York",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Default Address",
-                        style: Theme.of(context).textTheme.labelMedium,
+                        Row(
+                        children: [
+                          Text(
+                            "State:",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          SizedBox(width: 5,),
+                           Text(
+                            "NY",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          SizedBox(width: 10,),
+                           Text(
+                            "Zip:",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          SizedBox(width: 5,),
+                           Text(
+                            "14652",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 25,
