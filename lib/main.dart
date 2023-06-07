@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:ugocash/screen/dashboard.dart';
 import 'package:ugocash/screen/document.dart';
 import 'package:ugocash/screen/home.dart';
+import 'package:ugocash/screen/profile/account_screen.dart';
+import 'package:ugocash/screen/profile/address_details.dart';
 import 'package:ugocash/screen/register/kyc.dart';
 import 'package:ugocash/screen/register/kyc_screen.dart';
 import 'package:ugocash/screen/login.dart';
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
        onGenerateRoute: Routes().generateRoute,
       theme: themeData,
-      home: PhonenoRegister()
+      home: SplashScreen()
     );
   }
 }

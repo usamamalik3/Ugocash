@@ -39,9 +39,9 @@ class _OnBoardingState extends State<OnBoarding> {
             },
             children: const [
               BuildPage(
-                urlImage: 'assets/images/exchange.png' ,
-                title: 'Leading Payment \nApplication ',
-                subtitle: 'More than 100 million users with 1,000 Thousand partners and ervices in the World',
+                urlImage: 'assets/images/logo.png' ,
+                title: 'Leading Payment \nApplication for ',
+                subtitle: 'Individual\nBussiness\nGovernment\nPay & Get Paid\nSend & Receive\nAdd money to Wallet\n\nDo-it-yourself solution that enable 24/7 365 days anywhere any time& place\n\nYou must own:\n Bank Account',
               ),
               BuildPage(
                 urlImage: 'assets/images/banking.png',

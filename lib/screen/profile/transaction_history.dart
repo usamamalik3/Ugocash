@@ -72,7 +72,7 @@ class _TransferHistoryScreenState extends State<TransferHistoryScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
+        child: transferHistory.isNotEmpty ? ListView.builder(
           itemCount: transferHistory.length,
           itemBuilder: (BuildContext context, int index) {
             final transfer = transferHistory[index];
@@ -87,7 +87,7 @@ class _TransferHistoryScreenState extends State<TransferHistoryScreen> {
               ),
             );
           },
-        ),
+        ): Center(child: Text("No Transaction found")),
       ),
     );
   }

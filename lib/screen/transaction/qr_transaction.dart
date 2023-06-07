@@ -237,7 +237,7 @@ class _QrTransactionState extends State<QrTransaction> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ConfirmTranscation(
-                                                    email: emailcontroller.text,
+                                                    email: widget.email,
                                                     name: namecontroller.text,
                                                     amount: amountController
                                                         .text)));

@@ -1,9 +1,14 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ugocash/styles/colors.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AdressDetails extends StatefulWidget {
   const AdressDetails({super.key});
@@ -19,6 +24,72 @@ class _AdressDetailsState extends State<AdressDetails> {
   TextEditingController cityController = TextEditingController();
   TextEditingController stateController = TextEditingController();
   TextEditingController countryController = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  User? user = FirebaseAuth.instance.currentUser;
+  String? customerId;
+  String? apartment;
+  String? street;
+  String? city;
+  String? state;
+  String? zip;
+  getuser() async {
+    if (user != null) {
+      final DocumentSnapshot snap = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user!.uid)
+          .get();
+
+      setState(() {
+        customerId = snap["customerid"];
+        getCustomerAddressDetails(customerId!);
+      });
+    }
+  }
+
+
+Future<void> getCustomerAddressDetails(String customerId) async {
+
+
+  final headers = {
+ 
+    'Content-Type': 'application/json',
+  };
+
+  final url = 'https://www.ugoya.net/api/$customerId/customer/getById';
+
+  final response = await http.get(Uri.parse(url), headers: headers);
+
+  if (response.statusCode == 200) {
+    final customerData = json.decode(response.body); 
+    setState(() {
+        city=  customerData ["city"];
+    state=  customerData["state"];
+    zip=  customerData["postalCode"];
+    street = customerData['address1'];
+    });    
+ 
+
+    
+  } else {
+    Fluttertoast.showToast(
+              msg: "Failed to fetch customer address details",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.black,
+              fontSize: 16.0);
+    throw Exception('Failed to fetch customer address details');
+  }
+}
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getuser();
+    //  getCustomerAddressDetails("9ed1b7fd-4287-430a-9ee0-c012b2b51dec");
+  }
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -48,7 +119,7 @@ class _AdressDetailsState extends State<AdressDetails> {
                           ),
                           SizedBox(width: 5,),
                            Text(
-                            "dummy",
+                            street ??"",
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],
@@ -61,7 +132,7 @@ class _AdressDetailsState extends State<AdressDetails> {
                           ),
                           SizedBox(width: 5,),
                            Text(
-                            "401",
+                            apartment ?? "",
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],
@@ -77,7 +148,7 @@ class _AdressDetailsState extends State<AdressDetails> {
                           ),
                           SizedBox(width: 5,),
                            Text(
-                            "New York",
+                            city??"",
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],
@@ -90,7 +161,7 @@ class _AdressDetailsState extends State<AdressDetails> {
                           ),
                           SizedBox(width: 5,),
                            Text(
-                            "NY",
+                            state ??"",
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           SizedBox(width: 10,),
@@ -100,7 +171,7 @@ class _AdressDetailsState extends State<AdressDetails> {
                           ),
                           SizedBox(width: 5,),
                            Text(
-                            "14652",
+                            zip ??"",
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ],
