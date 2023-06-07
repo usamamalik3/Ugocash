@@ -200,7 +200,7 @@ class _KYCScreenState extends State<KYCScreen> {
               backgroundColor: Colors.white,
               textColor: Colors.black,
               fontSize: 16.0);
-          Navigator.pushReplacementNamed(context, Routes.home);
+          Navigator.pushReplacementNamed(context, Routes.kycquestion);
           // }
         },
       ),

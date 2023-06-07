@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:ugocash/screen/country_choose.dart';
+import 'package:ugocash/screen/register/forgot_password.dart';
 import 'package:ugocash/screen/home.dart';
 import 'package:ugocash/styles/colors.dart';
 
@@ -27,10 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
       _formKey.currentState!.save();
 
       try {
-        // ignore: deprecated_member_use
+        
         UserCredential user = await _auth.signInWithEmailAndPassword(
             email: emailcontroller.text, password: passwordController.text);
-            Navigator.pushNamed(context, Routes.home);
+            print(user);
+        Navigator.pushNamed(context, Routes.home);
       } on FirebaseAuthException catch (e) {
         print(e);
         if (e.code == 'user-not-found') {
@@ -81,7 +83,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CircleAvatar(
                     backgroundColor: Colors.white,
@@ -152,6 +153,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: AppColors.backgroundColor),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordScreen()));
+                          },
+                          child: Text(
+                            "Forget password?",
+                            style: Theme.of(context).textTheme.labelMedium,
+                          )),
+                    ],
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -176,32 +197,42 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 10.0),
-                  Text("Or Signin using ",
-                      style: Theme.of(context).textTheme.labelMedium),
-                  const SizedBox(height: 30.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        child: const FaIcon(
-                          FontAwesomeIcons.phone,
-                          size: 30,
-                          color: AppColors.secondaryColor,
-                        ),
-                        onTap: () {
-                          Navigator.pushNamed(context, Routes.phonenoregister);
-                          // setState(() {
-                          //   showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) {
-                          //       return ThemeHelper().alartDialog("Twitter","You tap on Twitter social icon.",context);
-                          //     },
-                          //   );
-                          // });
-                        },
-                      ),
-                    ],
-                  ),
+                  TextButton(
+                      style: TextButton.styleFrom(
+                          backgroundColor: AppColors.backgroundColor),
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.register);
+                      },
+                      child: Text(
+                        "Do not have account?",
+                        style: Theme.of(context).textTheme.labelMedium,
+                      )),
+                  // Text("Or Signin using ",
+                  //     style: Theme.of(context).textTheme.labelMedium),
+                  // const SizedBox(height: 30.0),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     InkWell(
+                  //       child: const FaIcon(
+                  //         FontAwesomeIcons.phone,
+                  //         size: 30,
+                  //         color: AppColors.secondaryColor,
+                  //       ),
+                  //       onTap: () {
+                  //         Navigator.pushNamed(context, Routes.phonenoregister);
+                  //         // setState(() {
+                  //         //   showDialog(
+                  //         //     context: context,
+                  //         //     builder: (BuildContext context) {
+                  //         //       return ThemeHelper().alartDialog("Twitter","You tap on Twitter social icon.",context);
+                  //         //     },
+                  //         //   );
+                  //         // });
+                  //       },
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),

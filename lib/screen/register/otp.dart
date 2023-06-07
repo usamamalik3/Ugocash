@@ -11,8 +11,10 @@ import 'package:ugocash/screen/register.dart';
 import 'package:ugocash/styles/colors.dart';
 
 class OtpScreeen extends StatefulWidget {
-  const OtpScreeen({super.key, required this.verificationId});
+  const OtpScreeen({super.key, required this.verificationId, required this.phoneno});
 final String verificationId;
+final String phoneno;
+
   @override
   State<OtpScreeen> createState() => _OtpScreeenState();
 }
@@ -63,12 +65,11 @@ Future<void> _submitOTP(otp) async {
   if(userr== null){
   UserCredential result = await _auth.signInWithCredential(credential);
   User user = result.user!;
-  Navigator.of(context).pushReplacementNamed( Routes.secondregister);
+  Navigator.of(context).pushReplacementNamed( Routes.pincreate, arguments: widget.phoneno);
   print("new user created");
   }
-  else{
-    Navigator.pushReplacementNamed(context, Routes.secondregister);
-  }
+ 
+
   }
   catch(e) {
     print(e);
@@ -82,7 +83,7 @@ Future<void> _submitOTP(otp) async {
         padding: const EdgeInsets.only(top:16.0),
         child: Column(
          
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),

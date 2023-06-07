@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,8 @@ class _OnBoardingState extends State<OnBoarding> {
   String subtitle = '';
   final controller = PageController();
   bool isLastPage = false;
+   final FirebaseAuth auth = FirebaseAuth.instance;
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +71,14 @@ class _OnBoardingState extends State<OnBoarding> {
                   //navigate to choose page
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setBool('showChoose', true);
+                  if(user!= null){
+                     Navigator.of(context)
+                      .pushReplacementNamed(Routes.home);
+                  }
+                  else{
                   Navigator.of(context)
-                      .pushReplacementNamed(Routes.welcome);
+                      .pushReplacementNamed(Routes.phonenoregister);
+                  }
                 },
                 child: Text(
                   'Get Started',

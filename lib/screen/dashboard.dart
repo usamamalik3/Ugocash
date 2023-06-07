@@ -1,10 +1,15 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ugocash/config/routes.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:ugocash/screen/link_method/add_to_wallet.dart';
 import '../styles/colors.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -14,70 +19,162 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  String? totalValue;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  User? user = FirebaseAuth.instance.currentUser;
+  String? fundingid;
+  String? cusid;
+  String? email;
+  getuser() async {
+    if (user != null) {
+      final DocumentSnapshot snap = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user!.uid)
+          .get();
+
+      setState(() {
+        email = snap["email"];
+        fundingid = snap["fundingid"];
+        cusid = snap["customerid"];
+       getBalance(fundingid);
+      });
+
+      
+    }
+  }
+
+  Future<String> getBalance(String? fundingSourceId) async {
+    final response = await http.get(
+        Uri.parse(
+            'https://www.ugoya.net/api/$fundingSourceId/fundingSources/getBalance'),
+        headers: {
+          'Content-Type': 'application/json',
+        });
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      setState(() {
+         totalValue = data['value'];
+      String currency = data['currency'];
+      });
+     
+      // print('Total value: $totalValue $currency');
+
+      if (totalValue == "0.00") {
+        print('Total is null');
+      }
+
+      
+      return totalValue!;
+    } else {
+      throw Exception('Failed to load balance');
+    }
+  }
+
+
   final _random = Random();
   TextEditingController _searchController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getuser();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(title: Text("Dashboard", style: Theme.of(context).textTheme.titleLarge,), actions: [
+        InkWell(
+          onTap: (){
+            
+            Navigator.pushNamed(context, Routes.qrscanner,);
+          
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.qr_code_scanner),
+          ),
+        ),
+        
+         InkWell(
+          onTap:(){
+            Navigator.pushNamed(context, Routes.qrcode, arguments: email);
+          },
+           child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.qr_code),
+                 ),
+         )
+      ],),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  // Add padding around the search bar
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  // Use a Material design search bar
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintStyle: Theme.of(context).textTheme.labelMedium,
-                      hintText: 'Search...',
-                      // Add a clear button to the search bar
-                      suffixIcon: _searchController.text.isNotEmpty
-                          ? IconButton(
-                              icon: Icon(Icons.clear),
-                              onPressed: () => _searchController.clear(),
-                            )
-                          : null,
-                      // Add a search icon or button to the search bar
-                      prefixIcon: IconButton(
-                       
-                        icon: Icon(Icons.search),
-                        onPressed: () {
-                          // Perform the search here
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Container(
+              //     // Add padding around the search bar
+              //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //     // Use a Material design search bar
+              //     child: TextField(
+              //       controller: _searchController,
+              //       decoration: InputDecoration(
+              //         hintStyle: Theme.of(context).textTheme.labelMedium,
+              //         hintText: 'Search...',
+              //         // Add a clear button to the search bar
+              //         suffixIcon: _searchController.text.isNotEmpty
+              //             ? IconButton(
+              //                 icon: Icon(Icons.clear),
+              //                 onPressed: () => _searchController.clear(),
+              //               )
+              //             : null,
+              //         // Add a search icon or button to the search bar
+              //         prefixIcon: IconButton(
+              //           icon: Icon(Icons.search),
+              //           onPressed: () {
+              //             // Perform the search here
+              //           },
+              //         ),
+              //         border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(20.0),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+            Card(
+               shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(children:[  fundingid == "" || fundingid == null || totalValue== null
+                      ? CircularProgressIndicator(color: AppColors.textColor2)
+                      :  Text(
+                          "$totalValue \$",
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
+                  Text(
+                    "Dashboard Balance",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),]),
               ),
-              Text(
-                "\$10,6500",
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Dashboard Balance",
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
+            ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     GestureDetector(
-                      onTap:(){
-                        Navigator.pushNamed(context, Routes.addbank);
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.addbank,
+                            arguments: cusid);
                       },
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -155,6 +252,8 @@ class _DashboardState extends State<Dashboard> {
                     GestureDetector(
                       onTap: () {
                         // showAlertDialog(context);
+                        Navigator.push(
+            context, MaterialPageRoute(builder: (context) =>  AddToWallet(customerid: cusid!,fundingid: fundingid!,)));
                       },
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -279,7 +378,7 @@ class _DashboardState extends State<Dashboard> {
     Widget continueButton = TextButton(
       child: Text(
         "click & Continue",
-        style: Theme.of(context).textTheme.labelMedium,
+        style: Theme.of(context).textTheme.titleLarge,
       ),
       onPressed: () {
         Navigator.pushNamed(context, Routes.recipient);
@@ -292,7 +391,9 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
     Widget textfield = TextFormField(
+      style: Theme.of(context).textTheme.titleLarge,
       decoration: InputDecoration(
+      
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide:
@@ -313,7 +414,7 @@ class _DashboardState extends State<Dashboard> {
         size: 40,
       ),
       title: Text("Send Money"),
-      content: Text("USD"),
+      content: Text("USD", style: Theme.of(context).textTheme.titleLarge,),
       actions: [
         textfield,
         continueButton,

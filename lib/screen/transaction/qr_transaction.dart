@@ -10,14 +10,14 @@ import 'package:ugocash/styles/colors.dart';
 import 'package:http/http.dart' as http;
 import '../../config/routes.dart';
 
-class RecipientScreen extends StatefulWidget {
-  const RecipientScreen({super.key, this.email});
- final String? email;
+class QrTransaction extends StatefulWidget {
+  const QrTransaction({super.key, required this.email});
+ final String email;
   @override
-  State<RecipientScreen> createState() => _RecipientScreenState();
+  State<QrTransaction> createState() => _QrTransactionState();
 }
 
-class _RecipientScreenState extends State<RecipientScreen> {
+class _QrTransactionState extends State<QrTransaction> {
   final _random = Random();
   final _formKey = GlobalKey<FormState>();
   TextEditingController namecontroller = TextEditingController();

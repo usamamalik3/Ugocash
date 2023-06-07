@@ -40,6 +40,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
   }
 
   File? licenseDocument;
+  
 
   void _uploadLicenseDocument() async {
     final ImagePicker _picker = ImagePicker();
@@ -50,34 +51,18 @@ class _DocumentScreenState extends State<DocumentScreen> {
       setState(() {
         licenseDocument = File(pickedFile.path);
       });
+        final url = Uri.parse('https://www.ugoya.net/api/$id/document/createForCustomer');
 
-      //     try {
-      //       final url = Uri.parse('https://www.ugoya.net/api/$id/document/createForCustomer');
-      //       // final request = http.MultipartRequest('POST', url)
-      //       //   // ..headers['Authorization'] = 'Bearer YOUR_API_TOKEN'
-      //       //   ..files.add(await http.MultipartFile.fromPath('file', licenseDocument!.path));
-      // final body = jsonEncode({
-      //     "documentType":"license",
-      //     "file":licenseDocument!.path,
-      //     // Additional customer details can be included here
-      //   });
-      //       final response = await http.post(url, headers: {}, body: body);
-      //       print(response.statusCode);
+  final request = http.Request('POST', url);
+    request.bodyBytes = await licenseDocument!.readAsBytes();
+     final response = await request.send();
+  if (response.statusCode == 201) {
+    print('File uploaded successfully');
+  }  else {
+    print('Error uploading file: ${response.reasonPhrase}');
+  }
 
-      //       // Handle the response
-      //       print(response.body);
-      //     } catch (error) {
-      //       // Handle any errors
-      //       print('Error uploading license document: $error');
-      //     }
-      Fluttertoast.showToast(
-          msg: "License uploaded Successfully.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.black,
-          fontSize: 16.0);
+        
     }
     requestPermission();
     await availableCameras().then(

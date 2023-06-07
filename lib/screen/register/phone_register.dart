@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:ugocash/screen/otp.dart';
+import 'package:ugocash/screen/register/otp.dart';
 
-import '../config/routes.dart';
-import '../styles/colors.dart';
+import '../../config/routes.dart';
+import '../../styles/colors.dart';
 
 class PhonenoRegister extends StatefulWidget {
   const PhonenoRegister({super.key});
@@ -16,7 +18,21 @@ class PhonenoRegister extends StatefulWidget {
 class _PhonenoRegisterState extends State<PhonenoRegister> {
   TextEditingController phonecontroller=TextEditingController();
 String? countrycode;
+ bool isSendingOTP = false;
+// Future<bool> checkDocumentExistence( String documentId) async {
+//   try {
+//     DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("pins").doc(documentId).get();
+//     return snapshot.exists;
+//   } catch (e) {
+//     print('Error checking document existence: $e');
+//     return false;
+//   }
+// }
+
   Future<void> sendOTP(String phoneNumber) async {
+     setState(() {
+      isSendingOTP = true;
+    });
   FirebaseAuth _auth = FirebaseAuth.instance;
   
 
@@ -24,18 +40,52 @@ String? countrycode;
     phoneNumber: phoneNumber,
     verificationCompleted: (PhoneAuthCredential credential) async {
       // Automatically sign in the user on Android devices that support automatic SMS verification
-      UserCredential result = await _auth.signInWithCredential(credential);
-      User user = result.user!;
-      print(user.uid);
+     try {
+            final UserCredential userCredential =
+                await _auth.signInWithCredential(credential);
+
+            if (userCredential.user != null) {
+              // Existing user authentication successful
+              Navigator.pushNamed(context, Routes.pinscreen, arguments: phoneNumber);
+              print('Existing user authentication successful');
+              
+              // Proceed with your logic
+            } else {
+              // Existing user authentication failed
+              print('Existing user authentication failed');
+              // Show an error message or handle the failure
+            }
+          } catch (e) {
+            // Error during existing user authentication
+            print('Error during existing user authentication: $e');
+          }
     },
     verificationFailed: (FirebaseAuthException e) {
-      print(e.message);
+        setState(() {
+         String?   errorMessage = e.message;
+            isSendingOTP = false;
+             Fluttertoast.showToast(
+            msg: errorMessage!,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.white,
+            textColor: Colors.black,
+            fontSize: 16.0);
+          });
+        
     },
     codeSent: (String verificationId, [int? resendToken]) {
       // Handle code sent callback
       // You can save the verification ID for later use
       print('Code Sent: $verificationId');
-       Navigator.pushReplacementNamed(context, Routes.otpscreen, arguments: verificationId);
+  //      FirebaseFirestore.instance.collection("users").doc(phoneNumber).set(
+  // {
+  //   "pin" : "",
+   
+  //   }
+  // );
+       Navigator.pushReplacementNamed(context, Routes.otpscreen, arguments: [phoneNumber, verificationId]);
     },
     codeAutoRetrievalTimeout: (String verificationId) {
       // Auto-retrieval timeout
@@ -44,6 +94,9 @@ String? countrycode;
     },
     timeout: Duration(seconds: 60),
   );
+   setState(() {
+      isSendingOTP = false;
+    });
 }
 
 
@@ -67,7 +120,7 @@ String? countrycode;
             ),
             SizedBox(height: 20,),
             IntlPhoneField(
-              initialCountryCode: "IN",
+              initialCountryCode: "US",
               dropdownTextStyle: Theme.of(context).textTheme.labelMedium,
               controller: phonecontroller,
               style:  Theme.of(context).textTheme.labelMedium,
@@ -94,25 +147,28 @@ String? countrycode;
              Center(
                     child: SizedBox(
                       width: width * 0.5,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // _loginWithPhoneNumber(phonecontroller.text);
-                          
+                      child: 
+                       ElevatedButton(
+                  onPressed: isSendingOTP
+                      ? null
+                      : () {
                           String phoneno= countrycode!+phonecontroller.text;
-                       sendOTP(phoneno);
-                        
+                          sendOTP(phoneno);
                         },
-                        child: const Padding(
+                  child: isSendingOTP
+                      ? CircularProgressIndicator() // Show CircularProgressIndicator while sending OTP
+                      : Padding(
                           padding: EdgeInsets.all(14.0),
                           child: Text(
                             'Next',
-                            style: TextStyle(
-                                fontSize: 16, color: AppColors.textColor),
+                            style: TextStyle(fontSize: 16, color: AppColors.textColor),
                           ),
                         ),
-                      ),
+                ),
+                     
                     ),
                   ),
+               
           ],
         ),
       ),

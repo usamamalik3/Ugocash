@@ -5,14 +5,17 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:ugocash/config/database_services.dart';
 import 'package:ugocash/config/routes.dart';
 import 'package:ugocash/global.dart';
 import 'package:ugocash/models/user_model.dart';
 
-import '../styles/colors.dart';
+import '../../styles/colors.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -21,10 +24,10 @@ import 'package:image_picker/image_picker.dart';
 
 class SecondRegister extends StatefulWidget {
   const SecondRegister({
-    super.key,
-    required this.email,
+    super.key, required this.pin,
+  
   });
-  final String email;
+final String pin;
 
   @override
   State<SecondRegister> createState() => _SecondRegisterState();
@@ -53,50 +56,45 @@ class _SecondRegisterState extends State<SecondRegister> {
   String documentStatus = '';
   String customerId = '';
   String errorMessage = '';
-  Future<String?> fetchCustomerId(
-      String firstName, String lastName, String email) async {
-    final url = 'https://www.ugoya.net/api/customer/getAll';
-    final headers = {
-      'Content-Type': 'application/json',
-    };
+  String? fundingid;
+
+  Future<String> getFundingSource(String customerId) async {
+    final url =
+        'https://www.ugoya.net/api/$customerId/fundingSources/forCustomer/get';
+
     final response = await http.get(
       Uri.parse(url),
-      headers: headers,
+      headers: {},
     );
 
     if (response.statusCode == 200) {
-      final responseBody = response.body;
-      final decodedJson = json.decode(responseBody);
+      final responseBody = json.decode(response.body);
+      print(responseBody);
+      // Extract the balance link from the funding-sources list
+      String balanceLink = responseBody[0]['_links']['balance']['href'];
+// Find the position of the second-to-last slash
+     fundingid = balanceLink.split("/")[4];
+      DatabaseServices databaseService =
+                                DatabaseServices();
+                            UserModel usermodel = UserModel(
+                                email: emailController.text,
+                                customerid: GlobalVariables.customerId, fundingid: fundingid);
+                            databaseService.adduser(usermodel);
 
-      final embeddedCustomers =
-          decodedJson['_embedded']['customers'] as List<dynamic>;
 
-      final matchingCustomer = embeddedCustomers.firstWhere(
-        (customer) =>
-            customer['firstName'] == firstName &&
-            customer['lastName'] == lastName &&
-            customer['email'] == email,
-        orElse: () => null,
-      );
-
-      if (matchingCustomer != null) {
-        final customerId = matchingCustomer['id'] as String;
-        setState(() {
-          GlobalVariables.customerId = customerId;
-        });
-        return customerId;
-      } else {
-        print('Matching customer not found');
-      }
+      // Print the extracted segment
+      print('fundingid: $fundingid');
+      // Print the extracted balance link
+      print('Balance Link: $balanceLink');
+      return fundingid!;
     } else {
-      print('Error fetching customers: ${response.statusCode}');
-      print(response.body);
+      throw Exception('Failed to fetch funding sources');
     }
-
-    return null;
   }
 
+
   Future<void> createVerifiedPersonalCustomer() async {
+    String email = emailController.text;
     final url = 'https://www.ugoya.net/api/customer/verified/personal';
     final headers = {
       'Content-Type': 'application/json',
@@ -105,14 +103,15 @@ class _SecondRegisterState extends State<SecondRegister> {
     final body = jsonEncode({
       "firstName": firstnameController.text,
       "lastName": lastnameController.text,
-      "email": emailController.text,
+      "email": email,
+      "ipAddress": ipAddress,
       "type": "personal",
       "address1": address1Controller.text,
       "city": cityController.text,
       "state": stateController.text,
       "postalCode": zipcodeController.text,
-      "dateOfBirth": dobcontroller.text,
-      "ssn": "1234"
+      "dateOfBirth": "1970-01-01",
+      "ssn": widget.pin,
       // Additional customer details can be included here
     });
     final response = await http.post(
@@ -125,19 +124,15 @@ class _SecondRegisterState extends State<SecondRegister> {
       print('Customer created successfully');
       final responseBody = response.body;
       print(responseBody);
-      //   final responseData = jsonDecode(response.body);
-      //  final id = responseData['_links']['self']['href']
-      //         .split('/')
-      //         .last; // Extract the customer ID from the response
-      //         setState(() {
-      //           GlobalVariables.customerId=id;
-      //         });
-      fetchCustomerId(firstnameController.text, lastnameController.text,
-          emailController.text);
-      DatabaseServices databaseService = DatabaseServices();
-      UserModel usermodel =
-          UserModel(email: widget.email, id: GlobalVariables.customerId);
-      databaseService.adduser(usermodel);
+      // final responseData = jsonDecode(response.body);
+      final id = responseBody
+          .split('/')
+          .last; // Extract the customer ID from the response
+      setState(() {
+        GlobalVariables.customerId = id;
+      });
+      // fetchCustomerId(firstnameController.text, lastnameController.text, email);
+      getFundingSource(id);
       Fluttertoast.showToast(
           msg: "Customer added Successfully.",
           toastLength: Toast.LENGTH_LONG,
@@ -149,8 +144,44 @@ class _SecondRegisterState extends State<SecondRegister> {
       // setState(() {
       //   // GlobalVariables.customerId=id;
       // }); // You can parse and use the response data as needed
-      Navigator.pushNamed(context, Routes.documentscreen);
-    } else {
+       requestPermission();
+    await availableCameras().then(
+        (value) => Navigator.pushNamed(context, Routes.kyc, arguments: value));
+    } 
+    else if (response.statusCode == 400) {
+      final jsonData = jsonDecode(response.body);
+      final embedded = jsonData["body"]['_embedded'];
+
+      if (embedded != null && embedded.containsKey('errors')) {
+        final errors = embedded['errors'];
+        if (errors.isNotEmpty && errors[0]['code'] == 'Invalid') {
+          final errorMessage = errors[0]['message'];
+          Fluttertoast.showToast(
+            msg: errorMessage,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.white,
+            textColor: Colors.black,
+            fontSize: 16.0,
+          );
+
+         
+          return;
+        }
+      }
+    }
+    else {
+        Fluttertoast.showToast(
+            msg: 'Error creating customer',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.white,
+            textColor: Colors.black,
+            fontSize: 16.0,
+          );
+
       print('Error creating customer: ${response.statusCode}');
       print(response.body);
     }
@@ -198,7 +229,7 @@ class _SecondRegisterState extends State<SecondRegister> {
     final body = jsonEncode({
       'firstName': firstnameController.text,
       'lastName': lastnameController.text,
-      'email': widget.email,
+      'email': emailController.text,
       'ipAddress': ipAddress,
       'businessName': businessNameController.text,
       // Additional customer details can be included here
@@ -216,13 +247,16 @@ class _SecondRegisterState extends State<SecondRegister> {
         //           GlobalVariables.customerId=id;
         //         });
         print(response.body);
+        final responseBody = response.body;
+        final id = responseBody
+            .split('/')
+            .last; // Extract the customer ID from the response
+        setState(() {
+          GlobalVariables.customerId = id;
+        });
+        // fetchCustomerId(firstnameController.text, lastnameController.text, email);
+        // getFundingSource(id);
 
-        fetchCustomerId(
-            firstnameController.text, lastnameController.text, widget.email);
-        DatabaseServices databaseService = DatabaseServices();
-        UserModel usermodel =
-            UserModel(email: widget.email, id: GlobalVariables.customerId);
-        databaseService.adduser(usermodel);
         Fluttertoast.showToast(
             msg: "Customer added Successfully.",
             toastLength: Toast.LENGTH_LONG,
@@ -231,6 +265,8 @@ class _SecondRegisterState extends State<SecondRegister> {
             backgroundColor: Colors.white,
             textColor: Colors.black,
             fontSize: 16.0);
+        // ignore: use_build_context_synchronously
+        
         Navigator.pushNamed(context, Routes.documentscreen);
         setState(() {
           // GlobalVariables.customerId = id;
@@ -251,6 +287,20 @@ class _SecondRegisterState extends State<SecondRegister> {
         errorMessage = 'Failed to create customer. Error: $error';
         print(errorMessage);
       });
+    }
+  }
+  void requestPermission() async {
+    PermissionStatus status = await Permission.camera.request();
+
+    if (status.isGranted) {
+      print('Camera permission granted');
+    } else if (status.isDenied) {
+      Permission.camera.request();
+      // Permission is denied
+      print('Camera permission denied');
+    } else if (status.isPermanentlyDenied) {
+      // Permission is permanently denied
+      print('Camera permission permanently denied');
     }
   }
 
@@ -352,7 +402,27 @@ class _SecondRegisterState extends State<SecondRegister> {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                 
+                    const SizedBox(
+                              height: 20,
+                            ),
+                            TextFormField(
+                              controller: emailController,
+                              validator: MultiValidator([EmailValidator(errorText: "errorText"), RequiredValidator(errorText: "Required")],),
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                hintText: "abc@gmail.com",
+                                label: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Email",
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                ),
+                              ),
+                            ),
+                             const SizedBox(
                     height: 20,
                   ),
                   DropdownButtonFormField(
@@ -428,30 +498,29 @@ class _SecondRegisterState extends State<SecondRegister> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      /** Checkbox Widget **/
-                      Checkbox(
-                        value: value,
-                        onChanged: (valuee) {
-                          setState(() {
-                            value = valuee!;
-                          });
-                        },
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ), //SizedBox
-                      const Text(
-                        'click here to be verified',
-                        style: TextStyle(fontSize: 17.0),
-                      ), //Text
-                      SizedBox(width: 10), //SizedBox
-                      //Checkbox
-                    ], //<Widget>[]
-                  ),
-                  value == true
-                      ? Column(
+                  // Row(
+                  //   children: [
+                  //     /** Checkbox Widget **/
+                  //     Checkbox(
+                  //       value: value,
+                  //       onChanged: (valuee) {
+                  //         setState(() {
+                  //           value = valuee!;
+                  //         });
+                  //       },
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 10,
+                  //     ), //SizedBox
+                  //     const Text(
+                  //       'click here to be verified',
+                  //       style: TextStyle(fontSize: 17.0),
+                  //     ), //Text
+                  //     SizedBox(width: 10), //SizedBox
+                  //     //Checkbox
+                  //   ], //<Widget>[]
+                  // ),
+                 Column(
                           children: [
                             TextFormField(
                               controller: address1Controller,
@@ -493,7 +562,7 @@ class _SecondRegisterState extends State<SecondRegister> {
                               controller: cityController,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                hintText: "Delhi",
+                                hintText: "New york",
                                 label: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
@@ -526,10 +595,13 @@ class _SecondRegisterState extends State<SecondRegister> {
                               height: 20,
                             ),
                             TextFormField(
+                               inputFormatters: [
+        LengthLimitingTextInputFormatter(2),
+      ],
                               controller: stateController,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                hintText: "Punjab",
+                                hintText: "NY",
                                 label: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
@@ -540,56 +612,9 @@ class _SecondRegisterState extends State<SecondRegister> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              controller: countryController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: "India",
-                                label: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Country",
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            IntlPhoneField(
-                              initialCountryCode: "US",
-                              dropdownTextStyle:
-                                  Theme.of(context).textTheme.labelMedium,
-                              controller: phonecontroller,
-                              style: Theme.of(context).textTheme.labelMedium,
-                              decoration: InputDecoration(
-                                labelStyle:
-                                    Theme.of(context).textTheme.labelMedium,
-                                labelText: 'Phone Number',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                    borderSide: const BorderSide(
-                                        width: 2.0,
-                                        color: AppColors.secondaryColor)),
-                              ),
-                              onChanged: (phone) {
-                                print(phone.completeNumber);
-                                setState(() {
-                                  countrycode = phone.countryCode;
-                                });
-                              },
-                              onCountryChanged: (country) {
-                                print('Country changed to: ' + country.name);
-                              },
-                            ),
                           ],
-                        )
-                      : Container(),
+                        ),
+                     
                   // SizedBox(width: 20,),
                   Center(
                     child: SizedBox(
@@ -600,9 +625,10 @@ class _SecondRegisterState extends State<SecondRegister> {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
 
-                            value == false
-                                ? createCustomer()
-                                : createVerifiedPersonalCustomer();
+                           
+                                 createVerifiedPersonalCustomer();
+
+                           
                           }
                           // Navigator.pushReplacementNamed(context, "/login");
                         },

@@ -1,97 +1,96 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:ugocash/styles/colors.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class TransactionHistory extends StatefulWidget {
-  const TransactionHistory({super.key});
+class TransferHistoryScreen extends StatefulWidget {
+  const TransferHistoryScreen({super.key});
 
   @override
-  State<TransactionHistory> createState() => _TransactionHistoryState();
+  _TransferHistoryScreenState createState() => _TransferHistoryScreenState();
 }
-final List dummyList = List.generate(10, (index) {
-    return {
-      "id": "This is the dummytitle $index",
-      "title": "dummy Data $index",
-      "subtitle": "\$100"
-    };
-  });
-class _TransactionHistoryState extends State<TransactionHistory> {
-  TextEditingController dateInput = TextEditingController();
+
+class _TransferHistoryScreenState extends State<TransferHistoryScreen> {
+  String? customerId; // Replace with the customer ID you want to retrieve transfer history for
+  List<dynamic> transferHistory = [];
+ User? user = FirebaseAuth.instance.currentUser;
+ 
+  getuser() async {
+    if (user != null) {
+      final DocumentSnapshot snap = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user!.uid)
+          .get();
+
+      setState(() {
+        customerId = snap["customerid"];
+        fetchTransferHistory(customerId);
+      });
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    getuser();
+  }
+
+  Future<void> fetchTransferHistory(customerId) async {
+    String apiUrl = 'https://www.ugoya.net/api/$customerId/transfer/forCustomer/get';
+  
+
+    // String credentials = base64.encode(utf8.encode('$apiKey:$apiSecret'));
+    // String basicAuth = 'Basic $credentials';
+
+    try {
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+         
+        },
+      );
+
+      if (response.statusCode == 200) {
+      
+          dynamic jsonData = jsonDecode(response.body);
+          transferHistory = jsonData;
+          print(transferHistory);
+      
+      } else {
+        print('Failed to get transfer history. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Exception occurred while retrieving transfer history: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( title: const Text("Transaction history"),),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: dateInput,
-                style: Theme.of(context).textTheme.labelMedium,
-                decoration: InputDecoration(
-                  hintText: "01/01/2023",
-                  label: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Transaction Date",
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ),
-                ),
-                readOnly: true,
-                onTap: () async {
-                  var datePicked = await DatePicker.showSimpleDatePicker(
-                    
-                    context,
-                    initialDate: DateTime(2023),
-                    firstDate: DateTime(2023),
-                    lastDate: DateTime(2050),
-                    dateFormat: "dd-MM-yyyy",
-                    locale: DateTimePickerLocale.en_us,
-                    looping: false,
-                    titleText: "Transaction Date",
-                    backgroundColor: AppColors.secondaryColor,
-                    textColor: AppColors.textColor2
-                  );
-                  if (datePicked == null) {
-                    return;
-                  } //ternary expression to check if date is null
-                  else {
-                    String formattedDate =
-                        DateFormat('dd-MM-yyyy').format(datePicked);
-                    setState(() {
-                      dateInput.text = formattedDate;
-                    });
-                  }
-                },
+      appBar: AppBar(
+        title: Text('Transfer History'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemCount: transferHistory.length,
+          itemBuilder: (BuildContext context, int index) {
+            final transfer = transferHistory[index];
+            return Card(
+              child: ListTile(
+                horizontalTitleGap: 10,
+                minVerticalPadding: 10.0,
+                title: Text('Amount: ${transfer['amount']['value']}',style: Theme.of(context).textTheme.titleLarge),
+                 subtitle: Text('Transfer ID: ${transfer['id']}', style: Theme.of(context).textTheme.titleLarge,),
+               
+                trailing: Text('Status: ${transfer['status']}',style: Theme.of(context).textTheme.titleLarge),
               ),
-              SizedBox(height: 20,),
-              Expanded(
-                flex: 5,
-                child: ListView.builder(
-                    itemCount: dummyList.length,
-                    itemBuilder: (context, index) => Card(
-                      elevation: 6,
-                      margin: const EdgeInsets.all(10),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                leading: const CircleAvatar(
-                backgroundColor: AppColors.primaryColor,
-                       
-                ),
-                title: Text(dummyList[index]["id"]),
-                subtitle: Text(dummyList[index]["title"]), 
-                trailing: Text(dummyList[index]["subtitle"]),
-                      ),
-                    ),
-                  ),
-              )
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
   }
 }
+
+
