@@ -87,7 +87,9 @@ class _DashboardState extends State<Dashboard> {
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Dashboard", style: Theme.of(context).textTheme.titleLarge,), actions: [
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Dashboard", style: Theme.of(context).textTheme.titleLarge,), actions: [
         InkWell(
           onTap: (){
             
@@ -210,7 +212,8 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        showAlertDialog(context);
+                        _showBottomSheet(context);
+                        // showAlertDialog(context);
                       },
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -426,6 +429,46 @@ class _DashboardState extends State<Dashboard> {
       context: context,
       builder: (BuildContext context) {
         return alert;
+      },
+    );
+  }
+   void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.0),
+        ),
+      ),
+      builder: (BuildContext ctx) {
+        return ClipRRect(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20.0),
+          ),
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.account_balance_wallet),
+                  title: Text('Send from Balance'),
+                  onTap: () {
+                    // Perform action for sending from balance
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.credit_card),
+                  title: Text('Send from Funding Source'),
+                  onTap: () {
+                    // Perform action for sending from funding source
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }

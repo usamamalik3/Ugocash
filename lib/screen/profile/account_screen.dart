@@ -40,6 +40,7 @@ class _AccountScreenState extends State<AccountScreen> {
   String name = "";
 
   String email = "";
+  
 
   Future<void> fetchCustomerDetails(customerId) async {
     String apiUrl = 'https://www.ugoya.net/api/$customerId//customer/getById';
@@ -67,6 +68,13 @@ class _AccountScreenState extends State<AccountScreen> {
       print('Exception occurred while retrieving customer details: $e');
     }
   }
+   Future<void> sendEmailVerification(User user) async {
+  await user.sendEmailVerification();
+  print('Verification email sent to ${user.email}');
+}
+bool isEmailVerified(User user) {
+  return user.emailVerified;
+}
 
   @override
   void initState() {
@@ -94,14 +102,17 @@ class _AccountScreenState extends State<AccountScreen> {
                       leading: SizedBox(
                           width: 65, height: 65, child: getImageHeader()),
                       title: Text(
-                        name!,
+                        name,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       subtitle: Text(
-                        email!,
+                        email,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
+                    TextButton.icon(onPressed: (){
+                      sendEmailVerification(user!);
+                    }, icon:isEmailVerified(user!) ? Icon(Icons.verified , color: AppColors.textColor2,): Icon(Icons.report_problem, color: AppColors.textColor2,), label: isEmailVerified(user!) ?  Text("Email is verified", style: Theme.of(context).textTheme.titleLarge,):Text("Click here! Email is not verified", style: Theme.of(context).textTheme.titleLarge) )
                   ],
                 ),
               ),
@@ -199,7 +210,7 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
         onPressed: () {
           auth.signOut();
-          Navigator.pushReplacementNamed(context, Routes.phonenoregister);
+          Navigator.pushReplacementNamed(context, Routes.welcome);
         },
       ),
     );

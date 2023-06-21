@@ -96,7 +96,7 @@ Future<void> getCustomerAddressDetails(String customerId) async {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(title: const Text("Address")),
-      body: Padding(
+      body: city!= null|| city!=""? Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
@@ -341,7 +341,7 @@ Future<void> getCustomerAddressDetails(String customerId) async {
             )
           ],
         ),
-      ),
+      ) :Center(child: CircularProgressIndicator()),
     );
   }
 }

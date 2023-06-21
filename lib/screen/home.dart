@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ugocash/screen/link_method/link_method.dart';
 import 'package:ugocash/screen/dashboard.dart';
@@ -17,12 +16,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
   final PageController _pageController = PageController();
-  List<Widget> screens =  [
-   const Dashboard(),
-  const LinkMethod(),
-   const RecipientScreen(),
+  List<Widget> screens = [
+     Dashboard(),
+     LinkMethod(),
+    RecipientScreen(),
     AccountScreen(),
-    
   ];
 
   _animateToPage(int pageIndex) {
@@ -42,8 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         children: screens,
       ),
-      bottomNavigationBar:
-       Container(
+      bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(20),
@@ -59,35 +56,31 @@ class _HomeScreenState extends State<HomeScreen> {
             topRight: Radius.circular(20.0),
           ),
           child: BottomNavigationBar(
-         
-            
             currentIndex: selectedIndex,
             onTap: _animateToPage,
             showUnselectedLabels: true,
-            items: const  <BottomNavigationBarItem>[
+            items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-               backgroundColor: AppColors.secondaryColor,
+                backgroundColor: AppColors.secondaryColor,
                 icon: Icon(Icons.dashboard),
                 label: 'Dashborad',
               ),
-             BottomNavigationBarItem(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.credit_card),
                 label: 'Card',
               ),
-             
               BottomNavigationBarItem(
                 icon: Icon(Icons.receipt_outlined),
                 label: 'Recipient',
               ),
-                BottomNavigationBarItem(
+              BottomNavigationBarItem(
                 icon: Icon(Icons.account_box),
                 label: 'Profile',
               ),
-          
-          
             ],
           ),
         ),
       ),
     );
-  }}
+  }
+}

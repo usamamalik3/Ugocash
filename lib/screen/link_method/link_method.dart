@@ -48,6 +48,7 @@ class _LinkMethodState extends State<LinkMethod> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+         automaticallyImplyLeading: false,
         title: Text("Link Method"),
       ),
       body: Column(

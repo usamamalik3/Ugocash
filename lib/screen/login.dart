@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
         UserCredential user = await _auth.signInWithEmailAndPassword(
             email: emailcontroller.text, password: passwordController.text);
             print(user);
-        Navigator.pushNamed(context, Routes.home);
+        Navigator.pushReplacementNamed(context, Routes.home);
       } on FirebaseAuthException catch (e) {
         print(e);
         if (e.code == 'user-not-found') {
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(),
+     
       body: SingleChildScrollView(
         child: SafeArea(
           child: Form(

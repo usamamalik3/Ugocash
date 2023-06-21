@@ -48,7 +48,7 @@ class _PinCreationScreenState extends State<PinCreationScreen> {
             ),
             SizedBox(height: 16.0),
             OTPTextField(
-            
+            obscureText: true,
                 otpFieldStyle: OtpFieldStyle(
                     borderColor: AppColors.textColor2,
                     enabledBorderColor: AppColors.secondaryColor),

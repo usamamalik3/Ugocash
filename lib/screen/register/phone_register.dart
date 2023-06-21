@@ -19,15 +19,7 @@ class _PhonenoRegisterState extends State<PhonenoRegister> {
   TextEditingController phonecontroller=TextEditingController();
 String? countrycode;
  bool isSendingOTP = false;
-// Future<bool> checkDocumentExistence( String documentId) async {
-//   try {
-//     DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("pins").doc(documentId).get();
-//     return snapshot.exists;
-//   } catch (e) {
-//     print('Error checking document existence: $e');
-//     return false;
-//   }
-// }
+
 
   Future<void> sendOTP(String phoneNumber) async {
      setState(() {
@@ -46,7 +38,7 @@ String? countrycode;
 
             if (userCredential.user != null) {
               // Existing user authentication successful
-              Navigator.pushNamed(context, Routes.pinscreen, arguments: phoneNumber);
+              Navigator.pushNamed(context, Routes.pincreate, arguments: phoneNumber);
               print('Existing user authentication successful');
               
               // Proceed with your logic
@@ -94,9 +86,7 @@ String? countrycode;
     },
     timeout: Duration(seconds: 60),
   );
-   setState(() {
-      isSendingOTP = false;
-    });
+  
 }
 
 
@@ -153,7 +143,8 @@ String? countrycode;
                       ? null
                       : () {
                           String phoneno= countrycode!+phonecontroller.text;
-                          sendOTP(phoneno);
+                        sendOTP(phoneno);
+                        
                         },
                   child: isSendingOTP
                       ? CircularProgressIndicator() // Show CircularProgressIndicator while sending OTP

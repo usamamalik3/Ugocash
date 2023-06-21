@@ -15,6 +15,7 @@ import 'package:ugocash/config/routes.dart';
 import 'package:ugocash/global.dart';
 import 'package:ugocash/models/user_model.dart';
 
+
 import '../../styles/colors.dart';
 import 'dart:async';
 import 'dart:io';
@@ -24,10 +25,12 @@ import 'package:image_picker/image_picker.dart';
 
 class SecondRegister extends StatefulWidget {
   const SecondRegister({
-    super.key, required this.pin,
-  
+    super.key,
+    this.pin,
+    this.email,
   });
-final String pin;
+  final String? pin;
+  final String? email;
 
   @override
   State<SecondRegister> createState() => _SecondRegisterState();
@@ -49,6 +52,12 @@ class _SecondRegisterState extends State<SecondRegister> {
   TextEditingController dobcontroller = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController pincontroller = TextEditingController();
+  TextEditingController businessClassificationController = TextEditingController();
+  TextEditingController businessTypeController = TextEditingController();
+
+  TextEditingController einController = TextEditingController();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
 
@@ -57,6 +66,8 @@ class _SecondRegisterState extends State<SecondRegister> {
   String customerId = '';
   String errorMessage = '';
   String? fundingid;
+
+
 
   Future<String> getFundingSource(String customerId) async {
     final url =
@@ -73,14 +84,13 @@ class _SecondRegisterState extends State<SecondRegister> {
       // Extract the balance link from the funding-sources list
       String balanceLink = responseBody[0]['_links']['balance']['href'];
 // Find the position of the second-to-last slash
-     fundingid = balanceLink.split("/")[4];
-      DatabaseServices databaseService =
-                                DatabaseServices();
-                            UserModel usermodel = UserModel(
-                                email: emailController.text,
-                                customerid: GlobalVariables.customerId, fundingid: fundingid);
-                            databaseService.adduser(usermodel);
-
+      fundingid = balanceLink.split("/")[4];
+      DatabaseServices databaseService = DatabaseServices();
+      UserModel usermodel = UserModel(
+          email: emailController.text,
+          customerid: GlobalVariables.customerId,
+          fundingid: fundingid);
+      databaseService.adduser(usermodel);
 
       // Print the extracted segment
       print('fundingid: $fundingid');
@@ -92,7 +102,6 @@ class _SecondRegisterState extends State<SecondRegister> {
     }
   }
 
-
   Future<void> createVerifiedPersonalCustomer() async {
     String email = emailController.text;
     final url = 'https://www.ugoya.net/api/customer/verified/personal';
@@ -103,7 +112,7 @@ class _SecondRegisterState extends State<SecondRegister> {
     final body = jsonEncode({
       "firstName": firstnameController.text,
       "lastName": lastnameController.text,
-      "email": email,
+      "email":widget.email!="" ? widget.email:emailController.text,
       "ipAddress": ipAddress,
       "type": "personal",
       "address1": address1Controller.text,
@@ -111,7 +120,7 @@ class _SecondRegisterState extends State<SecondRegister> {
       "state": stateController.text,
       "postalCode": zipcodeController.text,
       "dateOfBirth": "1970-01-01",
-      "ssn": widget.pin,
+      "ssn": widget.pin!= "" ? widget.pin: pincontroller.text,
       // Additional customer details can be included here
     });
     final response = await http.post(
@@ -144,11 +153,10 @@ class _SecondRegisterState extends State<SecondRegister> {
       // setState(() {
       //   // GlobalVariables.customerId=id;
       // }); // You can parse and use the response data as needed
-       requestPermission();
-    await availableCameras().then(
-        (value) => Navigator.pushNamed(context, Routes.kyc, arguments: value));
-    } 
-    else if (response.statusCode == 400) {
+      requestPermission();
+      await availableCameras().then((value) =>
+          Navigator.pushNamed(context, Routes.kyc, arguments: value));
+    } else if (response.statusCode == 400) {
       final jsonData = jsonDecode(response.body);
       final embedded = jsonData["body"]['_embedded'];
 
@@ -166,21 +174,19 @@ class _SecondRegisterState extends State<SecondRegister> {
             fontSize: 16.0,
           );
 
-         
           return;
         }
       }
-    }
-    else {
-        Fluttertoast.showToast(
-            msg: 'Error creating customer',
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white,
-            textColor: Colors.black,
-            fontSize: 16.0,
-          );
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Error creating customer',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.white,
+        textColor: Colors.black,
+        fontSize: 16.0,
+      );
 
       print('Error creating customer: ${response.statusCode}');
       print(response.body);
@@ -188,8 +194,7 @@ class _SecondRegisterState extends State<SecondRegister> {
   }
 
   Future<void> verifyDocument(String filePath) async {
-    final url =
-        'https://api.dwolla.com/customers/$customerId/documents'; // Dwolla API endpoint for document verification
+    final url =  'https://api.dwolla.com/customers/$customerId/documents'; // Dwolla API endpoint for document verification
     // Dwolla API endpoint for creating a customer
     final uri = Uri.parse(url);
     final headers = {
@@ -204,8 +209,7 @@ class _SecondRegisterState extends State<SecondRegister> {
 
     if (response.statusCode == 201) {
       final responseData = jsonDecode(response.body);
-      final status = responseData[
-          'status']; // Extract the document verification status from the response
+      final status = responseData['status']; // Extract the document verification status from the response
 
       setState(() {
         documentStatus = status;
@@ -218,20 +222,29 @@ class _SecondRegisterState extends State<SecondRegister> {
     }
   }
 
-  Future<void> createCustomer() async {
-    const url =
-        'https://www.ugoya.net/api/customer/unverified'; // Dwolla API endpoint for creating a customer
+  Future<void> createbussinesCustomer() async {
+    const url =        'https://www.ugoya.net/api/customer/verified/business'; // Dwolla API endpoint for creating a customer
     final uri = Uri.parse(url);
     final headers = {
       'Content-Type': 'application/json',
     };
 
     final body = jsonEncode({
-      'firstName': firstnameController.text,
-      'lastName': lastnameController.text,
-      'email': emailController.text,
-      'ipAddress': ipAddress,
-      'businessName': businessNameController.text,
+     "firstName": firstnameController.text,
+    "lastName": lastnameController.text,
+    "email":widget.email!="" ? widget.email:emailController.text,
+    "ipAddress": ipAddress,
+    "type": "business",
+    "dateOfBirth": "1980-01-31",
+    "ssn": pincontroller.text,
+    "address1": address1Controller.text,
+    "city": cityController.text,
+    "state": stateController.text,
+    "postalCode": zipcodeController.text,
+    "businessClassification": "9ed3f670-7d6f-11e3-b1ce-5404a6144203",
+    "businessType": "soleProprietorship",
+    "businessName": businessNameController.text,
+    "ein": einController.text
       // Additional customer details can be included here
     });
 
@@ -257,23 +270,52 @@ class _SecondRegisterState extends State<SecondRegister> {
         // fetchCustomerId(firstnameController.text, lastnameController.text, email);
         // getFundingSource(id);
 
-        Fluttertoast.showToast(
-            msg: "Customer added Successfully.",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white,
-            textColor: Colors.black,
-            fontSize: 16.0);
-        // ignore: use_build_context_synchronously
-        
-        Navigator.pushNamed(context, Routes.documentscreen);
+        getFundingSource(id);
+      Fluttertoast.showToast(
+          msg: "Customer added Successfully.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 16.0);
+      // setState(() {
+      //   // GlobalVariables.customerId=id;
+      // }); // You can parse and use the response data as needed
+      requestPermission();
+      await availableCameras().then((value) =>
+          Navigator.pushNamed(context, Routes.kyc, arguments: value));
+  
         setState(() {
           // GlobalVariables.customerId = id;
 
           errorMessage = '';
         });
-      } else {
+      }
+      else if (response.statusCode == 400) {
+        print(response);
+        print(response.body);
+      final jsonData = jsonDecode(response.body);
+      final embedded = jsonData["body"]['_embedded'];
+
+      if (embedded != null && embedded.containsKey('errors')) {
+        final errors = embedded['errors'];
+        if (errors.isNotEmpty && errors[0]['code'] == 'Invalid') {
+          final errorMessage = errors[0]['message'];
+          Fluttertoast.showToast(
+            msg: errorMessage,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.white,
+            textColor: Colors.black,
+            fontSize: 16.0,
+          );
+
+          return;
+        }
+      }
+    } else {
         setState(() {
           customerId = '';
           errorMessage =
@@ -289,6 +331,7 @@ class _SecondRegisterState extends State<SecondRegister> {
       });
     }
   }
+
   void requestPermission() async {
     PermissionStatus status = await Permission.camera.request();
 
@@ -402,13 +445,22 @@ class _SecondRegisterState extends State<SecondRegister> {
                       ),
                     ),
                   ),
-                 
-                    const SizedBox(
-                              height: 20,
-                            ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  widget.email == null || widget.email == ""
+                      ? Column(
+                          children: [
                             TextFormField(
                               controller: emailController,
-                              validator: MultiValidator([EmailValidator(errorText: "errorText"), RequiredValidator(errorText: "Required")],),
+                              validator: MultiValidator(
+                                [
+                                  EmailValidator(errorText: "errorText"),
+                                  RequiredValidator(errorText: "Required")
+                                ],
+                              ),
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 hintText: "abc@gmail.com",
@@ -422,9 +474,12 @@ class _SecondRegisterState extends State<SecondRegister> {
                                 ),
                               ),
                             ),
-                             const SizedBox(
-                    height: 20,
-                  ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        )
+                      : Container(),
                   DropdownButtonFormField(
                     style: Theme.of(context).textTheme.labelMedium,
                     decoration: InputDecoration(
@@ -481,15 +536,40 @@ class _SecondRegisterState extends State<SecondRegister> {
                   //       print('Error verifying document: ${response.statusCode}');
                   //     }
                   //   },),
+                  widget.pin == ""
+                      ? Column(
+                          children: [
+                            TextFormField(
+                              controller: pincontroller,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: "****",
+                                label: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Pin code",
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        )
+                      : Container(),
+
                   TextFormField(
                     controller: businessNameController,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                      hintText: "Bussiness name",
+                      hintText: "Business name",
                       label: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Bussiness name",
+                          "Business name",
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
@@ -520,101 +600,136 @@ class _SecondRegisterState extends State<SecondRegister> {
                   //     //Checkbox
                   //   ], //<Widget>[]
                   // ),
-                 Column(
-                          children: [
-                            TextFormField(
-                              controller: address1Controller,
-                              keyboardType: TextInputType.streetAddress,
-                              decoration: InputDecoration(
-                                hintText: "Address1",
-                                label: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Address1",
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
-                                ),
-                              ),
+                  Column(
+                    children: [
+                      TextFormField(
+                        controller: address1Controller,
+                        keyboardType: TextInputType.streetAddress,
+                        decoration: InputDecoration(
+                          hintText: "Address1",
+                          label: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Address1",
+                              style: Theme.of(context).textTheme.labelMedium,
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              controller: address2Controller,
-                              keyboardType: TextInputType.streetAddress,
-                              decoration: InputDecoration(
-                                hintText: "Address2",
-                                label: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Address2",
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              controller: cityController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: "New york",
-                                label: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "City",
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              controller: zipcodeController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                hintText: "12345",
-                                label: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Zip code",
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                               inputFormatters: [
-        LengthLimitingTextInputFormatter(2),
-      ],
-                              controller: stateController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: "NY",
-                                label: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "State",
-                                    style:
-                                        Theme.of(context).textTheme.labelMedium,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                     
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: address2Controller,
+                        keyboardType: TextInputType.streetAddress,
+                        decoration: InputDecoration(
+                          hintText: "Address2",
+                          label: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Address2",
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: cityController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          hintText: "New york",
+                          label: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "City",
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: zipcodeController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: "12345",
+                          label: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Zip code",
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(2),
+                        ],
+                        controller: stateController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          hintText: "NY",
+                          label: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "State",
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                     usertypevalue== "Business"?  Column(
+                         children: [
+                           TextFormField(
+                            
+                            controller: businessClassificationController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintStyle:  Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.grey),
+                              hintText: "9ed3f670-7d6f-11e3-b1ce-5404a6144203",
+                              label: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Business Classification",
+                                  style: Theme.of(context).textTheme.labelMedium,
+                                ),
+                              ),
+                            ),
+                      ),
+                      SizedBox(height: 10,),
+                       TextFormField(
+                            inputFormatters: [
+                              _EinInputFormatter(),
+                            ],
+                            controller: einController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: "00-0000000",
+                              label: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Ein",
+                                  style: Theme.of(context).textTheme.labelMedium,
+                                ),
+                              ),
+                            ),
+                      ),
+                         ],
+                       ): Container(),
+                      
+                    ],
+                  ),
+
                   // SizedBox(width: 20,),
                   Center(
                     child: SizedBox(
@@ -625,10 +740,7 @@ class _SecondRegisterState extends State<SecondRegister> {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
 
-                           
-                                 createVerifiedPersonalCustomer();
-
-                           
+                          usertypevalue=="Business"? createbussinesCustomer()  :createVerifiedPersonalCustomer();
                           }
                           // Navigator.pushReplacementNamed(context, "/login");
                         },
@@ -649,6 +761,48 @@ class _SecondRegisterState extends State<SecondRegister> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _EinInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String formattedText = '';
+    int selectionIndex = newValue.selection.end;
+
+    // Remove all non-digit characters
+    String cleanText = newValue.text.replaceAll(RegExp(r'\D'), '');
+
+    if (cleanText.isNotEmpty) {
+      // Add the first two digits
+      formattedText += cleanText.substring(0, 2);
+
+      // Add a hyphen after the second digit if there are more digits
+      if (cleanText.length > 2) {
+        formattedText += '-';
+      }
+
+      // Add the remaining digits with groups of 6
+      int remainingLength = cleanText.length - 2;
+      for (int i = 0; i < remainingLength; i += 6) {
+        int endIndex = i + 6;
+        if (endIndex > remainingLength) {
+          endIndex = remainingLength;
+        }
+        formattedText += cleanText.substring(i + 2, endIndex);
+        if (endIndex != remainingLength) {
+          formattedText += '-';
+        }
+      }
+    }
+
+    selectionIndex += formattedText.length - newValue.text.length;
+
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: selectionIndex),
     );
   }
 }

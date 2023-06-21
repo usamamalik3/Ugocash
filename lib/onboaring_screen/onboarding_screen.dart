@@ -46,7 +46,7 @@ class _OnBoardingState extends State<OnBoarding> {
               BuildPage(
                 urlImage: 'assets/images/banking.png',
                 title: 'Prestige and Absolute \n Security',
-                subtitle: 'Select your bank\n Link your Account \n Transfer Money\n Add Money to your Wallet',
+                subtitle: 'Select your bank\n Link your Account \n Send Money\n Add Money to your Wallet',
               ),
               // BuildPage(
               //   urlImage: 'assets/images/exchange3.png',
@@ -77,7 +77,7 @@ class _OnBoardingState extends State<OnBoarding> {
                   }
                   else{
                   Navigator.of(context)
-                      .pushReplacementNamed(Routes.phonenoregister);
+                      .pushReplacementNamed(Routes.welcome);
                   }
                 },
                 child: Text(

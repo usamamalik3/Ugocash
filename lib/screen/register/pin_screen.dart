@@ -39,7 +39,7 @@ class _PinScreenState extends State<PinScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title:  Text('Login Locked', style: Theme.of(context).textTheme.labelLarge,),
-            content: const Text('Please try again later.'),
+            content:  Text('Please try again later.', style: Theme.of(context).textTheme.labelLarge),
             actions: <Widget>[
               TextButton(
                 child:  Text('OK', style: Theme.of(context).textTheme.titleLarge,),
@@ -85,10 +85,10 @@ class _PinScreenState extends State<PinScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title:  Text('PIN Verification Failed', style: Theme.of(context).textTheme.labelLarge,),
-                content:  Text('Maximum PIN entry attempts exceeded. Login is locked for 5 minutes.',style: Theme.of(context).textTheme.titleLarge),
+                content:  Text('Maximum PIN entry attempts exceeded. Login is locked for 5 minutes.',style: Theme.of(context).textTheme.labelLarge),
                 actions: <Widget>[
                   TextButton(
-                    child: const Text('OK'),
+                    child:  Text('OK',style: Theme.of(context).textTheme.titleLarge),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -104,10 +104,10 @@ class _PinScreenState extends State<PinScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title:  Text('PIN Verification Failed', style: Theme.of(context).textTheme.labelLarge,),
-                content:  Text('Incorrect PIN. Please try again.', style: Theme.of(context).textTheme.titleLarge),
+                content:  Text('Incorrect PIN. Please try again.', style: Theme.of(context).textTheme.labelLarge),
                 actions: <Widget>[
                   TextButton(
-                    child: const Text('OK'),
+                    child:  Text('OK',style: Theme.of(context).textTheme.titleLarge),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -125,10 +125,10 @@ class _PinScreenState extends State<PinScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title:  Text('Error', style: Theme.of(context).textTheme.labelLarge,),
-            content:  Text('Error Athentication! Please try again.', style: Theme.of(context).textTheme.titleLarge),
+            content:  Text('Error Athentication! Please try again.', style: Theme.of(context).textTheme.labelLarge),
             actions: <Widget>[
               TextButton(
-                child: const Text('OK'),
+                child:  Text('OK',style: Theme.of(context).textTheme.titleLarge),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -161,6 +161,7 @@ class _PinScreenState extends State<PinScreen> {
                 otpFieldStyle: OtpFieldStyle(
                     borderColor: AppColors.textColor2,
                     enabledBorderColor: AppColors.secondaryColor),
+                    obscureText: true,
                 controller: _pinController,
                 length: 4,
                 width: MediaQuery.of(context).size.width,

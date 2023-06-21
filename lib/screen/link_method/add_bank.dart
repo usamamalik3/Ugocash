@@ -13,21 +13,92 @@ import '../../models/fundingsourcemodel.dart';
 
 class AddBank extends StatefulWidget {
   const AddBank({super.key, required this.customerId});
- final String customerId;
+  final String customerId;
   @override
   State<AddBank> createState() => _AddBankState();
 }
 
 class _AddBankState extends State<AddBank> {
   bool agree = false;
+  bool initiated = false;
+  bool verified = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController routingNumberController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController accountnumberController = TextEditingController();
-  
- 
+  Future<void> initiatemicrodeposit(fundingID) async {
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            'https://www.ugoya.net/api/$fundingID/fundingSources/intiateMicroDeposit'));
+    request.body = '''''';
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      Navigator.of(context).pop();
+      showBottomSheet(context, fundingID);
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+  Future<void> verifyMicroDepositVerification(id) async {
+    // Replace with your Dwolla API credentials
+
+    // Generate two random micro deposit amounts
+    double microDeposit1 = 0.05;
+    double microDeposit2 = 0.09;
+
+    // Build the request body
+    Map<String, dynamic> requestBody = {
+      "amount1": {"value": microDeposit1, "currency": "USD"},
+      "amount2": {"value": microDeposit2, "currency": "USD"}
+    };
+
+    // Convert the request body to JSON
+    String requestBodyJson = jsonEncode(requestBody);
+
+    // Construct the API endpoint URL
+    String url =
+        'https://www.ugoya.net/api/$id/fundingSources/verifyMicroDeposit';
+
+    // Prepare the request headers
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+
+    try {
+      // Send the API request
+
+      var response = await http.post(Uri.parse(url),
+          headers: headers, body: requestBodyJson);
+
+      // Handle the API response
+      if (response.statusCode == 200) {
+        // Micro deposits initiated successfully
+        Navigator.of(context).pop();
+        Fluttertoast.showToast(
+          msg: response.body,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+        );
+        print('Micro deposits verified successfully');
+      } else {
+        // Error occurred
+        print(
+            'Error verificating micro deposits: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('Exception occurred: $e');
+    }
+  }
+
   Future<void> linkBankAccount(String customerId) async {
     final String baseUrl = 'https://www.ugoya.net/api';
     final String endpoint = '/$customerId/fundingSources/createForCustomer';
@@ -40,7 +111,7 @@ class _AddBankState extends State<AddBank> {
       "routingNumber": routingNumberController.text,
       "accountNumber": accountnumberController.text,
       "bankAccountType": "checking",
-      "name": bankvalue,
+      "name": firstnameController.text,
       // Additional customer details can be included here
     });
 
@@ -59,29 +130,22 @@ class _AddBankState extends State<AddBank> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-          msg: "bank linked Successfully.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.black,
-          fontSize: 16.0);
-      showAlertDialog(context);
+      final id = response.body.split('/').last;
+
+      showAlertDialog(context, id);
+      initiatemicrodeposit(id);
     } else {
       print('Failed to link bank account. Status code: ${response.statusCode}');
       print('Response body: ${response.body}');
     }
   }
 
- 
   String? bankvalue;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-  
   }
 
   @override
@@ -98,7 +162,6 @@ class _AddBankState extends State<AddBank> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Column(
               children: [
-                
                 Form(
                   key: _formKey,
                   child: Column(
@@ -132,7 +195,8 @@ class _AddBankState extends State<AddBank> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Account Holder First name",
-                                  style: Theme.of(context).textTheme.labelMedium,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
                               ),
                             ),
@@ -153,7 +217,8 @@ class _AddBankState extends State<AddBank> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Last name",
-                                  style: Theme.of(context).textTheme.labelMedium,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
                               ),
                             ),
@@ -223,7 +288,7 @@ class _AddBankState extends State<AddBank> {
                           //           maxLines: null,
                           //           controller: searchController,
                           //           decoration: InputDecoration(
-                          //             isDense: true,
+                          //             i20sDense: true,
                           //             contentPadding: const EdgeInsets.symmetric(
                           //               horizontal: 10,
                           //               vertical: 8,
@@ -252,7 +317,7 @@ class _AddBankState extends State<AddBank> {
                           //       ),
                           //       searchMatchFn: (departmentlist, searchValue) {
                           //         return (departmentlist.value
-                          //             .toString()
+                          //             .toString()io
                           //             .toLowerCase()
                           //             .contains(searchValue.toLowerCase()));
                           //       },
@@ -282,7 +347,8 @@ class _AddBankState extends State<AddBank> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Routing",
-                                  style: Theme.of(context).textTheme.labelMedium,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
                               ),
                             ),
@@ -304,7 +370,8 @@ class _AddBankState extends State<AddBank> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Account Number",
-                                  style: Theme.of(context).textTheme.labelMedium,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
                               ),
                             ),
@@ -325,7 +392,8 @@ class _AddBankState extends State<AddBank> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "User Name",
-                                  style: Theme.of(context).textTheme.labelMedium,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
                               ),
                             ),
@@ -346,7 +414,8 @@ class _AddBankState extends State<AddBank> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Password",
-                                  style: Theme.of(context).textTheme.labelMedium,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
                               ),
                             ),
@@ -383,7 +452,7 @@ class _AddBankState extends State<AddBank> {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
                                     // _loginWithPhoneNumber(phonecontroller.text);
-                                    linkBankAccount(GlobalVariables.customerId);
+                                    linkBankAccount(widget.customerId);
                                   }
                                 },
                                 child: const Padding(
@@ -391,7 +460,8 @@ class _AddBankState extends State<AddBank> {
                                   child: Text(
                                     'Link Bank',
                                     style: TextStyle(
-                                        fontSize: 16, color: AppColors.textColor),
+                                        fontSize: 16,
+                                        color: AppColors.textColor),
                                   ),
                                 ),
                               ),
@@ -410,15 +480,45 @@ class _AddBankState extends State<AddBank> {
     );
   }
 
-  showAlertDialog(BuildContext context) {
+  void showBottomSheet(BuildContext context, id) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Confirm two Micro-deposit of 0.05\$ and 0.09\$ to verify your bank account',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  // Close the bottom sheet
+                  verifyMicroDepositVerification(id);
+                },
+                child: Text('Verify'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  showAlertDialog(BuildContext context, id) {
     // set up the buttons
 
     Widget continueButton = TextButton(
       child: Text(
-        "click & Continue",
+        "Verify micro-deposit",
         style: Theme.of(context).textTheme.labelMedium,
       ),
-      onPressed: () {},
+      onPressed: () {
+        verifyMicroDepositVerification(id);
+      },
     );
     Widget card = Card(
       child: Container(
@@ -428,17 +528,16 @@ class _AddBankState extends State<AddBank> {
     );
 
     // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
+    AlertDialog alert = const AlertDialog(
       backgroundColor: AppColors.secondaryColor,
       actionsAlignment: MainAxisAlignment.center,
       icon: Icon(
         Icons.credit_card,
         size: 40,
       ),
-      title: Text("Bank details Added Succesfully"),
-      content: Text("Now you can freely pay and shop and Enjoy it"),
+      title: Text("initiating microdeposit to verify"),
       actions: [
-        continueButton,
+        Center(child: SizedBox(width: 50, child: CircularProgressIndicator(color: AppColors.textColor2,),))
       ],
     );
 

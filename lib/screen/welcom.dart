@@ -12,6 +12,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  bool agree=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,18 +64,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               onPressed: () {
-                Navigator.of(context)
+              Navigator.of(context)
                       .pushReplacementNamed(Routes.register);
               },
             ),
           ),
-           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Text(
-              'By Proceeding you agree to our\n terms of use\n and Privacy policy', textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-          ),
+           
         ],
       ),
     );

@@ -1,5 +1,6 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,21 @@ class _OtpScreeenState extends State<OtpScreeen> {
     timeout: Duration(seconds: 60),
   );
 }
-
+Future<void> checkDocumentExistence( String documentId) async {
+  try {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("pins").doc(documentId).get();
+   if(snapshot.exists){
+    Navigator.pushReplacementNamed(context, Routes.pinscreen, arguments: documentId);
+   }
+   else{
+     Navigator.pushReplacementNamed(context, Routes.pincreate, arguments: documentId);
+    // sendOTP(documentId);
+   }
+  } catch (e) {
+    print('Error checking document existence: $e');
+    
+  }
+}
     
 Future<void> _submitOTP(otp) async {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -65,7 +80,7 @@ Future<void> _submitOTP(otp) async {
   if(userr== null){
   UserCredential result = await _auth.signInWithCredential(credential);
   User user = result.user!;
-  Navigator.of(context).pushReplacementNamed( Routes.pincreate, arguments: widget.phoneno);
+checkDocumentExistence(widget.phoneno);
   print("new user created");
   }
  
@@ -78,7 +93,7 @@ Future<void> _submitOTP(otp) async {
 
     return Scaffold(
 
-      appBar: AppBar(),
+      appBar: AppBar(title: Text("Two-Step verification"),),
       body: Padding(
         padding: const EdgeInsets.only(top:16.0),
         child: Column(
@@ -145,7 +160,7 @@ Future<void> _submitOTP(otp) async {
               TextButton(
                 style: TextButton.styleFrom(backgroundColor: AppColors.backgroundColor),
                 onPressed: (){
-                  
+                  resendOTP(widget.phoneno);
                 }, child: Text("Resend Again" ,style: Theme.of(context).textTheme.labelMedium,))
           ],
         ),

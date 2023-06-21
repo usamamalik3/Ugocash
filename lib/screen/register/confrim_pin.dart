@@ -51,6 +51,7 @@ class _CnfrmPinScreenState extends State<CnfrmPinScreen> {
             ),
             SizedBox(height: 16.0),
            OTPTextField(
+            obscureText: true,
               otpFieldStyle: OtpFieldStyle(borderColor: AppColors.textColor2,
               enabledBorderColor: AppColors.secondaryColor
               ),
@@ -82,7 +83,7 @@ class _CnfrmPinScreenState extends State<CnfrmPinScreen> {
   {
     "pin":pincode,
   });
-                Navigator.pushNamed(context, Routes.secondregister, arguments: pincode);
+                Navigator.pushReplacementNamed(context, Routes.secondregister, arguments: pincode);
                }
                else{
                  Fluttertoast.showToast(

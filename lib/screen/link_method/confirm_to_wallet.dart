@@ -41,6 +41,7 @@ class _ConfirmToWalletState extends State<ConfirmToWallet> {
     }}
 
 
+
   Future<String> getFundingSource(String customerId) async {
     final url =
         'https://www.ugoya.net/api/$customerId/fundingSources/forCustomer/get';
@@ -324,7 +325,7 @@ Future<void> createTransaction(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          "Transfer pin",
+                          "Send pin",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                         TextFormField(
@@ -363,7 +364,7 @@ Future<void> createTransaction(
                   child: const Padding(
                     padding: EdgeInsets.all(14.0),
                     child: Text(
-                      'Press to transfer money',
+                      'Press to Send money',
                       style:
                           TextStyle(fontSize: 16, color: AppColors.textColor),
                     ),

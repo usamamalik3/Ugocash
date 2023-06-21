@@ -384,7 +384,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          "Transfer pin",
+                          "Pin Code",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                         TextFormField(
@@ -418,12 +418,12 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                   onPressed: () {
                     // _loginWithPhoneNumber(phonecontroller.text);
 
-                    createTransaction(fundingid!, desfundingid!, widget.amount);
+                    createTransaction("25fd4000-bdde-4f15-8216-2cbf64bc850b", "8acb8b30-9d36-4607-b739-388891de573f", widget.amount);
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(14.0),
                     child: Text(
-                      'Press to transfer money',
+                      'Press to Send money',
                       style:
                           TextStyle(fontSize: 16, color: AppColors.textColor),
                     ),
