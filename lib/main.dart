@@ -12,6 +12,7 @@ import 'package:ugocash/screen/register/kyc_screen.dart';
 import 'package:ugocash/screen/login.dart';
 import 'package:ugocash/screen/register/phone_register.dart';
 import 'package:ugocash/screen/register/pin_screen.dart';
+import 'package:ugocash/screen/transaction/confirm_transaction.dart';
 import 'package:ugocash/screen/transaction/qr_code.dart';
 import 'package:ugocash/screen/register/create_pin_screen.dart';
 import 'package:ugocash/screen/transaction/qr_scanner.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
        onGenerateRoute: Routes().generateRoute,
       theme: themeData,
-      home: SplashScreen()
+      home: SplashScreen(),
     );
   }
 }

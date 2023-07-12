@@ -239,8 +239,8 @@ class _QrTransactionState extends State<QrTransaction> {
                                                 ConfirmTranscation(
                                                     email: widget.email,
                                                     name: namecontroller.text,
-                                                    amount: amountController
-                                                        .text)));
+                                                    amount:double.parse( amountController
+                                                        .text))));
                                   }
                                 },
                                 child: const Padding(

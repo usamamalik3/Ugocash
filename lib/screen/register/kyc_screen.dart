@@ -1,22 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
+import 'dart:ui' as ui;
+
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'dart:ui' as ui;
-import 'dart:math' as math;
-
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:ugocash/config/database_services.dart';
+
 import 'package:ugocash/config/routes.dart';
 import 'package:ugocash/global.dart';
-import 'package:http/http.dart' as http;
 import 'package:device_info/device_info.dart';
 
 class GenderIMEIScreen extends StatefulWidget {
@@ -48,6 +49,31 @@ class _GenderIMEIScreenState extends State<GenderIMEIScreen> {
     }
   }
 
+Future updateUser() async {
+DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection("user").doc(user!.uid).get();
+if (documentSnapshot.exists) {
+  // Map<String, dynamic> userData = documentSnapshot.data() as Map<String, dynamic>;
+  
+  // // Retrieve the existing values
+  // String? email = userData['email'];
+  // String? customerId = userData['customerid'];
+  // String? fundingId = userData['fundingid'];
+  // String? iMEi = userData['iMEi'];
+  // String? gender = userData['gender'];
+Map<String, dynamic> userdata = {};
+  // Update the values
+  userdata["imei"] = imeiController.text;
+  userdata["gender"] = genderController.text;
+  DatabaseServices databaseService=DatabaseServices();
+
+  return await databaseService.updateuser(userdata, user!.uid);
+
+  // Update the 'iMEi' and 'gender' fields in the document
+
+}}
+
+  
+
   void _uploadLicenseDocument() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? pickedFile =
@@ -57,24 +83,36 @@ class _GenderIMEIScreenState extends State<GenderIMEIScreen> {
       setState(() {
         licenseDocument = File(pickedFile.path);
       });
-      var headers = {
-        'Accept': 'application/vnd.dwolla.v1.hal+json',
-      };
-      var request = http.MultipartRequest(
-          'POST',
-          Uri.parse(
-              'https://www.ugoya.net/api/82bcfc0a-b3a0-4f65-8f2c-01cf5925df48/document/createForCustomer'));
-      request.fields.addAll({'documentType': 'license'});
-      request.files
-          .add(await http.MultipartFile.fromPath('file', pickedFile.path));
-      request.headers.addAll(headers);
+   
 
-      http.StreamedResponse response = await request.send();
+    // Convert the request body to JSON
+    // final requestBodyJson = jsonEncode(requestBody);
+        final url = Uri.parse('https://www.ugoya.net/api/$id/document/createForCustomer');
+   var request = http.MultipartRequest('POST', url);
+  // request.headers['Authorization'] = 'Bearer <your_access_token_here>';
+  request.fields['documentType'] = "license";
+  request.files.add(await http.MultipartFile.fromPath('file', licenseDocument!.path, contentType: MediaType('image', 'jpeg')));
+  var response = await request.send();
+    
 
       if (response.statusCode == 200) {
-        print(await response.stream.bytesToString());
+          Fluttertoast.showToast(
+              msg: "license uploaded Succesfully",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.black,
+              fontSize: 16.0);
       } else {
-        print(response.reasonPhrase);
+        Fluttertoast.showToast(
+              msg: "license uploaded error",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.black,
+              fontSize: 16.0);
       }
     }
     //  Navigator.pushNamed(context, Routes.kyc, arguments: value);
@@ -159,8 +197,9 @@ class _GenderIMEIScreenState extends State<GenderIMEIScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, Routes.home, (route) => false);
+                    updateUser();
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //     context, Routes.home, (route) => false);
                     // Navigator.pushReplacementNamed(context, Routes.home);
                     // fetchIMEI();
                   },

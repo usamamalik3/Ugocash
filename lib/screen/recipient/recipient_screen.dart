@@ -239,8 +239,7 @@ class _RecipientScreenState extends State<RecipientScreen> {
                                                 ConfirmTranscation(
                                                     email: emailcontroller.text,
                                                     name: namecontroller.text,
-                                                    amount: amountController
-                                                        .text)));
+                                                    amount: double.parse(amountController.text))));
                                   }
                                 },
                                 child: const Padding(

@@ -23,6 +23,7 @@ import 'package:ugocash/screen/recipient/recipient_screen.dart';
 import 'package:ugocash/screen/register.dart';
 import 'package:ugocash/screen/register/register2.dart';
 import 'package:ugocash/screen/transaction/qr_transaction.dart';
+import 'package:ugocash/screen/user_policy_screen.dart';
 import 'package:ugocash/screen/welcom.dart';
 
 import '../screen/register/kyc_screen.dart';
@@ -54,6 +55,7 @@ class Routes {
   static const String addressdetails = "/addressdetails";
   static const String transactionhistory = "/transactionhistory";
   static const String addtowallet = "/addtowallet";
+  static const String userpolicy ="/userpolicy";
 
 
   Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -64,6 +66,10 @@ class Routes {
       case welcome:
         return MaterialPageRoute<WelcomeScreen>(
             builder: (context) => const WelcomeScreen());
+      case userpolicy:
+          return MaterialPageRoute<UserPolicy>(
+            builder: (context) =>  UserPolicy());
+
       case register:
         return MaterialPageRoute<RegisterScreen>(
             builder: (context) => const RegisterScreen());

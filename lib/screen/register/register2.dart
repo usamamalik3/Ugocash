@@ -15,7 +15,6 @@ import 'package:ugocash/config/routes.dart';
 import 'package:ugocash/global.dart';
 import 'package:ugocash/models/user_model.dart';
 
-
 import '../../styles/colors.dart';
 import 'dart:async';
 import 'dart:io';
@@ -53,7 +52,8 @@ class _SecondRegisterState extends State<SecondRegister> {
   TextEditingController countryController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController pincontroller = TextEditingController();
-  TextEditingController businessClassificationController = TextEditingController();
+  TextEditingController businessClassificationController =
+      TextEditingController();
   TextEditingController businessTypeController = TextEditingController();
 
   TextEditingController einController = TextEditingController();
@@ -66,8 +66,6 @@ class _SecondRegisterState extends State<SecondRegister> {
   String customerId = '';
   String errorMessage = '';
   String? fundingid;
-
-
 
   Future<String> getFundingSource(String customerId) async {
     final url =
@@ -87,10 +85,17 @@ class _SecondRegisterState extends State<SecondRegister> {
       fundingid = balanceLink.split("/")[4];
       DatabaseServices databaseService = DatabaseServices();
       UserModel usermodel = UserModel(
-          email: emailController.text,
+          email: emailController.text == "" ? widget.email : emailController.text,
           customerid: GlobalVariables.customerId,
-          fundingid: fundingid);
-      databaseService.adduser(usermodel);
+          fundingid: fundingid,
+          pin: pincontroller.text,
+          imei: "",
+          gender:"",
+          );
+          setState(() {
+            databaseService.adduser(usermodel);
+          });
+      
 
       // Print the extracted segment
       print('fundingid: $fundingid');
@@ -112,7 +117,7 @@ class _SecondRegisterState extends State<SecondRegister> {
     final body = jsonEncode({
       "firstName": firstnameController.text,
       "lastName": lastnameController.text,
-      "email":widget.email!="" ? widget.email:emailController.text,
+      "email": widget.email != "" ? widget.email : emailController.text,
       "ipAddress": ipAddress,
       "type": "personal",
       "address1": address1Controller.text,
@@ -120,7 +125,7 @@ class _SecondRegisterState extends State<SecondRegister> {
       "state": stateController.text,
       "postalCode": zipcodeController.text,
       "dateOfBirth": "1970-01-01",
-      "ssn": widget.pin!= "" ? widget.pin: pincontroller.text,
+      "ssn": widget.pin != "" ? widget.pin : pincontroller.text,
       // Additional customer details can be included here
     });
     final response = await http.post(
@@ -193,58 +198,30 @@ class _SecondRegisterState extends State<SecondRegister> {
     }
   }
 
-  Future<void> verifyDocument(String filePath) async {
-    final url =  'https://api.dwolla.com/customers/$customerId/documents'; // Dwolla API endpoint for document verification
-    // Dwolla API endpoint for creating a customer
-    final uri = Uri.parse(url);
-    final headers = {
-      'Content-Type': 'application/octet-stream',
-    };
-
-    // Read the document file and convert it to base64
-    final fileBytes = await File(filePath).readAsBytes();
-    final base64File = base64Encode(fileBytes);
-
-    final response = await http.post(uri, headers: headers, body: base64File);
-
-    if (response.statusCode == 201) {
-      final responseData = jsonDecode(response.body);
-      final status = responseData['status']; // Extract the document verification status from the response
-
-      setState(() {
-        documentStatus = status;
-      });
-    } else {
-      setState(() {
-        documentStatus =
-            'Verification Failed'; // Handle the error case appropriately
-      });
-    }
-  }
-
   Future<void> createbussinesCustomer() async {
-    const url =        'https://www.ugoya.net/api/customer/verified/business'; // Dwolla API endpoint for creating a customer
+    const url =
+        'https://www.ugoya.net/api/customer/verified/business'; // Dwolla API endpoint for creating a customer
     final uri = Uri.parse(url);
     final headers = {
       'Content-Type': 'application/json',
     };
 
     final body = jsonEncode({
-     "firstName": firstnameController.text,
-    "lastName": lastnameController.text,
-    "email":widget.email!="" ? widget.email:emailController.text,
-    "ipAddress": ipAddress,
-    "type": "business",
-    "dateOfBirth": "1980-01-31",
-    "ssn": pincontroller.text,
-    "address1": address1Controller.text,
-    "city": cityController.text,
-    "state": stateController.text,
-    "postalCode": zipcodeController.text,
-    "businessClassification": "9ed3f670-7d6f-11e3-b1ce-5404a6144203",
-    "businessType": "soleProprietorship",
-    "businessName": businessNameController.text,
-    "ein": einController.text
+      "firstName": firstnameController.text,
+      "lastName": lastnameController.text,
+      "email": widget.email != "" ? widget.email : emailController.text,
+      "ipAddress": ipAddress,
+      "type": "business",
+      "dateOfBirth": "1980-01-31",
+      "ssn": pincontroller.text,
+      "address1": address1Controller.text,
+      "city": cityController.text,
+      "state": stateController.text,
+      "postalCode": zipcodeController.text,
+      "businessClassification": "9ed3f670-7d6f-11e3-b1ce-5404a6144203",
+      "businessType": "soleProprietorship",
+      "businessName": businessNameController.text,
+      "ein": einController.text
       // Additional customer details can be included here
     });
 
@@ -271,51 +248,50 @@ class _SecondRegisterState extends State<SecondRegister> {
         // getFundingSource(id);
 
         getFundingSource(id);
-      Fluttertoast.showToast(
-          msg: "Customer added Successfully.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.black,
-          fontSize: 16.0);
-      // setState(() {
-      //   // GlobalVariables.customerId=id;
-      // }); // You can parse and use the response data as needed
-      requestPermission();
-      await availableCameras().then((value) =>
-          Navigator.pushNamed(context, Routes.kyc, arguments: value));
-  
-        setState(() {
-          // GlobalVariables.customerId = id;
-
-          errorMessage = '';
-        });
-      }
-      else if (response.statusCode == 400) {
-        print(response);
-        print(response.body);
-      final jsonData = jsonDecode(response.body);
-      final embedded = jsonData["body"]['_embedded'];
-
-      if (embedded != null && embedded.containsKey('errors')) {
-        final errors = embedded['errors'];
-        if (errors.isNotEmpty && errors[0]['code'] == 'Invalid') {
-          final errorMessage = errors[0]['message'];
-          Fluttertoast.showToast(
-            msg: errorMessage,
+        Fluttertoast.showToast(
+            msg: "Customer added Successfully.",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.white,
             textColor: Colors.black,
-            fontSize: 16.0,
-          );
+            fontSize: 16.0);
+        // setState(() {
+        //   // GlobalVariables.customerId=id;
+        // }); // You can parse and use the response data as needed
+        requestPermission();
+        await availableCameras().then((value) =>
+            Navigator.pushNamed(context, Routes.kyc, arguments: value));
 
-          return;
+        setState(() {
+          // GlobalVariables.customerId = id;
+
+          errorMessage = '';
+        });
+      } else if (response.statusCode == 400) {
+        print(response);
+        print(response.body);
+        final jsonData = jsonDecode(response.body);
+        final embedded = jsonData["body"]['_embedded'];
+
+        if (embedded != null && embedded.containsKey('errors')) {
+          final errors = embedded['errors'];
+          if (errors.isNotEmpty && errors[0]['code'] == 'Invalid') {
+            final errorMessage = errors[0]['message'];
+            Fluttertoast.showToast(
+              msg: errorMessage,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.white,
+              textColor: Colors.black,
+              fontSize: 16.0,
+            );
+
+            return;
+          }
         }
-      }
-    } else {
+      } else {
         setState(() {
           customerId = '';
           errorMessage =
@@ -511,31 +487,6 @@ class _SecondRegisterState extends State<SecondRegister> {
                     height: 20,
                   ),
 
-                  //        ElevatedButton(
-                  //   child: Text('Upload Document'),
-                  //   onPressed: () async {
-                  //     document = await FilePicker.pickImage(source: ImageSource.gallery);
-                  //   },
-                  // ),
-                  // ElevatedButton(
-                  //   child: Text('Verify Document'),
-                  //   onPressed: () async {
-                  //     if (customerId == null || document == null) {
-                  //       return;
-                  //     }
-
-                  //     var response = await dwolla.customers.documents.upload(
-                  //       customerId: customerId,
-                  //       documentType: documentType,
-                  //       document: document,
-                  //     );
-
-                  //     if (response.statusCode == 200) {
-                  //       print('Document verified successfully');
-                  //     } else {
-                  //       print('Error verifying document: ${response.statusCode}');
-                  //     }
-                  //   },),
                   widget.pin == ""
                       ? Column(
                           children: [
@@ -578,28 +529,6 @@ class _SecondRegisterState extends State<SecondRegister> {
                   const SizedBox(
                     height: 20,
                   ),
-                  // Row(
-                  //   children: [
-                  //     /** Checkbox Widget **/
-                  //     Checkbox(
-                  //       value: value,
-                  //       onChanged: (valuee) {
-                  //         setState(() {
-                  //           value = valuee!;
-                  //         });
-                  //       },
-                  //     ),
-                  //     const SizedBox(
-                  //       width: 10,
-                  //     ), //SizedBox
-                  //     const Text(
-                  //       'click here to be verified',
-                  //       style: TextStyle(fontSize: 17.0),
-                  //     ), //Text
-                  //     SizedBox(width: 10), //SizedBox
-                  //     //Checkbox
-                  //   ], //<Widget>[]
-                  // ),
                   Column(
                     children: [
                       TextFormField(
@@ -687,46 +616,58 @@ class _SecondRegisterState extends State<SecondRegister> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10,),
-                     usertypevalue== "Business"?  Column(
-                         children: [
-                           TextFormField(
-                            
-                            controller: businessClassificationController,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintStyle:  Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.grey),
-                              hintText: "9ed3f670-7d6f-11e3-b1ce-5404a6144203",
-                              label: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Business Classification",
-                                  style: Theme.of(context).textTheme.labelMedium,
-                                ),
-                              ),
-                            ),
+                      SizedBox(
+                        height: 10,
                       ),
-                      SizedBox(height: 10,),
-                       TextFormField(
-                            inputFormatters: [
-                              _EinInputFormatter(),
-                            ],
-                            controller: einController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: "00-0000000",
-                              label: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Ein",
-                                  style: Theme.of(context).textTheme.labelMedium,
+                      usertypevalue == "Business"
+                          ? Column(
+                              children: [
+                                TextFormField(
+                                  controller: businessClassificationController,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    hintStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(color: Colors.grey),
+                                    hintText:
+                                        "9ed3f670-7d6f-11e3-b1ce-5404a6144203",
+                                    label: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Business Classification",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                      ),
-                         ],
-                       ): Container(),
-                      
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  inputFormatters: [
+                                    _EinInputFormatter(),
+                                  ],
+                                  controller: einController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    hintText: "00-0000000",
+                                    label: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Ein",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
                     ],
                   ),
 
@@ -740,7 +681,9 @@ class _SecondRegisterState extends State<SecondRegister> {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
 
-                          usertypevalue=="Business"? createbussinesCustomer()  :createVerifiedPersonalCustomer();
+                            usertypevalue == "Business"
+                                ? createbussinesCustomer()
+                                : createVerifiedPersonalCustomer();
                           }
                           // Navigator.pushReplacementNamed(context, "/login");
                         },

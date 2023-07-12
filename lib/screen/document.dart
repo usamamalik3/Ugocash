@@ -51,11 +51,16 @@ class _DocumentScreenState extends State<DocumentScreen> {
       setState(() {
         licenseDocument = File(pickedFile.path);
       });
-        final url = Uri.parse('https://www.ugoya.net/api/$id/document/createForCustomer');
+        Map<String, dynamic> requestBody = {
+      "documentType": licenseDocument,
+      "file": "license"
+    };
 
-  final request = http.Request('POST', url);
-    request.bodyBytes = await licenseDocument!.readAsBytes();
-     final response = await request.send();
+    // Convert the request body to JSON
+    String requestBodyJson = jsonEncode(requestBody);
+        final url = Uri.parse('https://www.ugoya.net/api/$id/document/createForCustomer');
+   var response = await http.post(Uri.parse(url.toString()),
+         body: requestBodyJson);
   if (response.statusCode == 201) {
     print('File uploaded successfully');
   }  else {

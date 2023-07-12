@@ -8,6 +8,7 @@ import 'package:ugocash/config/routes.dart';
 import 'package:ugocash/global.dart';
 import 'package:ugocash/styles/colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class ConfirmTranscation extends StatefulWidget {
   ConfirmTranscation(
@@ -17,7 +18,7 @@ class ConfirmTranscation extends StatefulWidget {
       required this.email});
 
   final String name;
-  final String amount;
+  final double amount;
   final String email;
 
   @override
@@ -25,9 +26,74 @@ class ConfirmTranscation extends StatefulWidget {
 }
 
 class _ConfirmTranscationState extends State<ConfirmTranscation> {
+  TextEditingController pincontroller = TextEditingController();
   User? user = FirebaseAuth.instance.currentUser;
   String? fundingid;
   String? desfundingid;
+  double transactionAmount = 5000;
+  double fee = 0;
+  String? ipAddress = "";
+  bool isAmount10K = false;
+  String? pin;
+
+  Future<void> retrieveIpAddress() async {
+    try {
+      final response =
+          await http.get(Uri.parse('https://api.ipify.org/?format=json'));
+      if (response.statusCode == 200) {
+        final ipAddressJson = response.body;
+        final ipAddressData = ipAddressJson.replaceAll(RegExp('[^0-9.]'), '');
+        setState(() {
+          ipAddress = ipAddressData;
+          print(ipAddress);
+        });
+      } else {
+        setState(() {
+          ipAddress = 'Error';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        ipAddress = 'Error';
+      });
+    }
+  }
+
+  void launchEmail() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: 'getpaid1@yahoo.com',
+      query:
+          'subject=Payment request&body=Transaction of ${widget.amount} from a customer having  ',
+    );
+
+    final String url = params.toString();
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      throw 'Could not launch email';
+    }
+  }
+
+  void calculateFee() {
+    if (widget.amount <= 4999) {
+      fee = 2.25;
+    } else if (widget.amount <= 9999) {
+      fee = 2.99;
+    } else if (widget.amount >= 10000) {
+      // Send email to getpaid1@yahoo.com
+      setState(() {
+        isAmount10K = true;
+      });
+      retrieveIpAddress();
+      launchEmail();
+      // launchUrl('mailto:getpaid1@yahoo.com?subject=Payment Request');
+      return;
+    }
+
+    fee += widget.amount * 0.0203;
+  }
+
   getuser() async {
     if (user != null) {
       final DocumentSnapshot snap = await FirebaseFirestore.instance
@@ -37,7 +103,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
 
       setState(() {
         fundingid = snap["fundingid"];
-        
+        pin = snap["pin"];
       });
     }
   }
@@ -112,7 +178,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
   Future<void> createTransaction(
     String sourceFundingSource,
     String destinationFundingSource,
-    String amount,
+    double amount,
   ) async {
     final url = 'https://www.ugoya.net/api/transfer/create';
 
@@ -199,6 +265,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
     // TODO: implement initState
     super.initState();
     getuser();
+    calculateFee();
     fetchCustomerId(widget.email);
     // getFundingSource(cusid);
   }
@@ -250,7 +317,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
               child: Container(
-                height: 300,
+                height: 350,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -327,11 +394,37 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
+                              "amount",
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            Text(
+                              widget.amount.toString(),
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        const Divider(
+                          color: AppColors.textColor2,
+                          thickness: 0.5,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
                               "Transaction fee",
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text(
-                              "0\$",
+                              fee.toString(),
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
@@ -357,7 +450,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text(
-                              "\$${widget.amount}",
+                              "\$${widget.amount + fee}",
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
@@ -388,6 +481,7 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                         TextFormField(
+                          controller: pincontroller,
                           decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.credit_card,
@@ -417,8 +511,19 @@ class _ConfirmTranscationState extends State<ConfirmTranscation> {
                 child: ElevatedButton(
                   onPressed: () {
                     // _loginWithPhoneNumber(phonecontroller.text);
-
-                    createTransaction("25fd4000-bdde-4f15-8216-2cbf64bc850b", "8acb8b30-9d36-4607-b739-388891de573f", widget.amount);
+                    isAmount10K
+                        ? null
+                        : pincontroller.text == pin
+                            ? createTransaction(
+                                fundingid!, desfundingid!, widget.amount)
+                            : Fluttertoast.showToast(
+                                msg: "Pin does not match",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black,
+                                fontSize: 16.0);
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(14.0),

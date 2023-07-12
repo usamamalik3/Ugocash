@@ -13,7 +13,7 @@ import '../../styles/colors.dart';
 import 'account_item.dart';
 
 class AccountScreen extends StatefulWidget {
-  AccountScreen({super.key});
+  const AccountScreen({super.key});
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();

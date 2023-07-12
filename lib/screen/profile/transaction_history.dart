@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class TransferHistoryScreen extends StatefulWidget {
   const TransferHistoryScreen({super.key});
 
@@ -103,6 +105,8 @@ class _TransferHistoryScreenState extends State<TransferHistoryScreen> {
                 itemCount: transferHistory.length,
                 itemBuilder: (BuildContext context, int index) {
                   final transfer = transferHistory[index];
+                  DateTime dateTime = DateTime.parse(transfer['created']);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
                   return Card(
                     child: ListTile(
                       horizontalTitleGap: 10,
@@ -121,7 +125,10 @@ class _TransferHistoryScreenState extends State<TransferHistoryScreen> {
                         children: [
                           Text('Amount: ${transfer['amount']['value']}',
                               style: Theme.of(context).textTheme.titleLarge),
+                              
                           Text('Status: ${transfer['status']}',
+                              style: Theme.of(context).textTheme.titleLarge),
+                               Text('Created Date: $formattedDate',
                               style: Theme.of(context).textTheme.titleLarge),
                         ],
                       ),

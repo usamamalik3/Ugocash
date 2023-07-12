@@ -116,38 +116,6 @@ class _DashboardState extends State<Dashboard> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Container(
-              //     // Add padding around the search bar
-              //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              //     // Use a Material design search bar
-              //     child: TextField(
-              //       controller: _searchController,
-              //       decoration: InputDecoration(
-              //         hintStyle: Theme.of(context).textTheme.labelMedium,
-              //         hintText: 'Search...',
-              //         // Add a clear button to the search bar
-              //         suffixIcon: _searchController.text.isNotEmpty
-              //             ? IconButton(
-              //                 icon: Icon(Icons.clear),
-              //                 onPressed: () => _searchController.clear(),
-              //               )
-              //             : null,
-              //         // Add a search icon or button to the search bar
-              //         prefixIcon: IconButton(
-              //           icon: Icon(Icons.search),
-              //           onPressed: () {
-              //             // Perform the search here
-              //           },
-              //         ),
-              //         border: OutlineInputBorder(
-              //           borderRadius: BorderRadius.circular(20.0),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             Card(
                shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
@@ -212,8 +180,8 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _showBottomSheet(context);
-                        // showAlertDialog(context);
+                        // _showBottomSheet(context);
+                        showAlertDialog(context);
                       },
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -235,7 +203,7 @@ class _DashboardState extends State<Dashboard> {
                                   height: 10,
                                 ),
                                 Text(
-                                  "Send\n Money",
+                                  "Send Money",
                                   style: Theme.of(context).textTheme.titleLarge,
                                 )
                               ],
@@ -290,60 +258,6 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Card(
-              //     shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(10)),
-              //     child: Container(
-              //       width: width * 1,
-              //       height: height * 0.28,
-              //       child: GridView.builder(
-              //         shrinkWrap: true,
-              //         padding: const EdgeInsets.symmetric(
-              //             horizontal: 8, vertical: 4),
-              //         itemCount: 8,
-              //         itemBuilder: (ctx, i) {
-              //           return Padding(
-              //             padding: const EdgeInsets.all(8.0),
-              //             child: Column(
-              //               children: [
-              //                 Container(
-              //                   decoration: BoxDecoration(
-              //                     color: Color.fromARGB(
-              //                         _random.nextInt(256),
-              //                         _random.nextInt(256),
-              //                         _random.nextInt(256),
-              //                         _random.nextInt(256)),
-              //                     borderRadius:
-              //                         BorderRadius.all(Radius.circular(10)),
-              //                   ),
-              //                   child: Icon(Icons.receipt_outlined),
-              //                   width: 50,
-              //                   height: 58,
-              //                 ),
-              //                 SizedBox(
-              //                   height: 5,
-              //                 ),
-              //                 Text('Title',
-              //                     style: Theme.of(context)
-              //                         .textTheme
-              //                         .labelMedium),
-              //               ],
-              //             ),
-              //           );
-              //         },
-              //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //           crossAxisCount: 4,
-              //           childAspectRatio: 1.5,
-              //           crossAxisSpacing: 2,
-              //           mainAxisSpacing: 2,
-              //           mainAxisExtent: 100,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -364,14 +278,7 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () {},
-      //   label: Text(
-      //     "UgoCash Now",
-      //     style: TextStyle(color: AppColors.textColor),
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      
     );
   }
 

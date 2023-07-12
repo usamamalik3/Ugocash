@@ -97,6 +97,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final String termsAndConditionsUrl =
       'https://ugocash.net/terms-and-conditions/';
   final String privacyPolicyUrl = 'https://ugocash.net/privacy-policy/';
+  final String dwollaurl = "https://www.dwolla.com/legal/tos/";
+  final String dwollaprivacy ="https://www.dwolla.com/legal/privacy/#legal-content";
 
   void _launchURL(String url) async {
     final uri = Uri.parse(url);
@@ -248,83 +250,79 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             onChanged: (value) {
                               setState(() {
                                 agree = value ?? false;
-                                value == true
-                                    ? showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text('Confirmation', style: Theme.of(context).textTheme.labelMedium,),
-                                            content: Text(
-                                                'Do you agree?'),
-                                            actions: [
-                                              TextButton(
-                                                style: Theme.of(context).textButtonTheme.style!.copyWith(backgroundColor: MaterialStatePropertyAll(AppColors.textColor2)),
-                                                onPressed: () {
-                                                  // Perform actions when "Agree" is pressed
-                                                  Navigator.of(context).pop();
-                                                   setState(() {
-                                                    agree = false;
-                                                  });
-                                                  // Add your code here
-                                                },
-                                                child: Text('Cancel'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  // Perform actions when "Cancel" is pressed
-                                                  Navigator.of(context).pop();
-                                                 
-                                                  // Add your code here
-                                                },
-                                                child: Text('Agree', style: Theme.of(context).textTheme.titleLarge,),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      )
-                                    : null;
                               });
                             },
                           ),
-                          GestureDetector(
-                            onTap: () => _launchURL(termsAndConditionsUrl),
-                            child: Text(
-                              'Terms and Conditions',
-                              style: TextStyle(
-                                fontSize: 16,
-                                decoration: TextDecoration.underline,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
                           Text(
-                            ' and ',
+                            'By Checking the box you agree to our ',
                             style: TextStyle(fontSize: 16),
                           ),
-                          GestureDetector(
-                            onTap: () => _launchURL(privacyPolicyUrl),
-                            child: Text(
-                              'Privacy Policy,',
-                              style: TextStyle(
-                                fontSize: 16,
-                                decoration: TextDecoration.underline,
-                                color: Colors.blue,
+
+                        ]),
+                        Padding(
+                          padding: const EdgeInsets.only(left:30.0,),
+                          child: Row(children: [GestureDetector(
+                              onTap: () => _launchURL(termsAndConditionsUrl),
+                              child: Text(
+                                'Terms of Services',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
+                                ),
                               ),
                             ),
+                            Text(
+                              ' and ',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            GestureDetector(
+                              onTap: () => _launchURL(privacyPolicyUrl),
+                              child: Text(
+                                'Privacy Policy,',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),],),
+                        ),
+                       Text(
+                            ' as well as our partner Dwolla\'s ',
+                            style: TextStyle(fontSize: 16),
                           ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () => _launchURL(privacyPolicyUrl),
-                        child: Text(
-                          'Dwolla terms and services and privacy policy',
-                          style: TextStyle(
-                            fontSize: 16,
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue,
+                    Padding(
+                      padding: const EdgeInsets.only(left:30.0),
+                      child: Row(children: [
+                          GestureDetector(
+                          onTap: () => _launchURL(dwollaurl),
+                          child: Text(
+                            'Terms Of Services',
+                            style: TextStyle(
+                              fontSize: 16,
+                              decoration: TextDecoration.underline,
+                              color: Colors.blue,
+                            ),
                           ),
                         ),
-                      ),
+                         Text(
+                              ' and ',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                        GestureDetector(
+                          onTap: () => _launchURL(dwollaprivacy),
+                          child: Text(
+                            'Privacy Policy',
+                            style: TextStyle(
+                              fontSize: 16,
+                              decoration: TextDecoration.underline,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ],),
+                    )
                     ],
                   ),
                   const SizedBox(height: 10.0),
@@ -344,12 +342,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   backgroundColor: Colors.white,
                                   textColor: Colors.black,
                                   fontSize: 16.0);
-                          ;
+                          
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(14.0),
                           child: Text(
-                            'Next',
+                            'Sign up',
                             style: TextStyle(
                                 fontSize: 16, color: AppColors.textColor),
                           ),
